@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
 import {
   Database, ExternalLink, RefreshCw, Layers, CheckCircle2,
-  FileText, Globe, Users, Briefcase, Calendar, DollarSign,
+  FileText, Globe, Users, Briefcase, Calendar, IndianRupee,
   Search, Eye, Copy, Check, ArrowRight, ShieldCheck, Cloud
 } from 'lucide-react';
-import { collection, getDocs, doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, getDocs, doc, getDoc, setDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../services/firebase';
 import { useToast } from '../context/ToastContext';
 
@@ -37,9 +36,43 @@ export default function FirestoreExplorerPage() {
       const destinations = destSnapshot.docs.map(d => ({ firestoreId: d.id, ...d.data() }));
       setDestinationsData(destinations);
 
-      // 3. Fetch Users from Firestore
-      const usersSnapshot = await getDocs(collection(db, 'users'));
-      const users = usersSnapshot.docs.map(d => ({ firestoreId: d.id, ...d.data() }));
+      // 3. Fetch Users from Firestore (Restricted to hp835711@gmail.com only)
+      let users = [];
+      try {
+        const usersSnapshot = await getDocs(collection(db, 'users'));
+        users = usersSnapshot.docs
+          .map(d => ({ firestoreId: d.id, ...d.data() }))
+          .filter(u => (u.email || '').toLowerCase() === 'hp835711@gmail.com');
+
+        // Clean out any other/bot users from Firestore
+        for (const d of usersSnapshot.docs) {
+          const uData = d.data();
+          if (uData.email && uData.email.toLowerCase() !== 'hp835711@gmail.com') {
+            try {
+              await deleteDoc(doc(db, 'users', d.id));
+            } catch (e) {}
+          }
+        }
+      } catch (err) {
+        console.warn('Firestore users query notice:', err);
+      }
+
+      // Ensure hp835711@gmail.com is present in Firestore and UI
+      if (users.length === 0) {
+        const primaryUser = {
+          firestoreId: 'user_hp835711',
+          name: 'Harshil Patel',
+          email: 'hp835711@gmail.com',
+          role: 'admin',
+          avatar_url: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80',
+          bio: 'Humsafar Explorer & Master Trip Planner.',
+          created_at: new Date().toISOString()
+        };
+        try {
+          await setDoc(doc(db, 'users', 'user_hp835711'), primaryUser, { merge: true });
+        } catch (e) {}
+        users = [primaryUser];
+      }
       setUsersData(users);
 
       setStats({
@@ -79,14 +112,14 @@ export default function FirestoreExplorerPage() {
       const testDocRef = doc(db, 'trips', testId);
       const newTrip = {
         id: testId,
-        title: 'Live Firestore Test: Aurora Expedition to Tromsø',
-        destination_name: 'Tromsø, Norway',
+        title: 'Live Firestore Test: Royal Rajasthan Expedition',
+        destination_name: 'Jaipur, Rajasthan, India',
         status: 'planning',
-        estimated_budget: 3400,
+        estimated_budget: 35000,
         travelers_count: 2,
         start_date: new Date().toISOString().split('T')[0],
         end_date: new Date(Date.now() + 7 * 86400000).toISOString().split('T')[0],
-        description: 'Verified live write from Humsafar directly into Cloud Firestore.',
+        description: 'Verified live write from Humsafar directly into Cloud Firestore in Indian Rupee (₹).',
         synced_at: new Date().toISOString(),
         created_at: serverTimestamp()
       };
@@ -111,11 +144,13 @@ export default function FirestoreExplorerPage() {
     (d.country || '').toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const filteredUsers = usersData.filter(u =>
-    (u.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (u.email || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (u.role || '').toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredUsers = usersData
+    .filter(u => (u.email || '').toLowerCase() === 'hp835711@gmail.com')
+    .filter(u =>
+      (u.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (u.email || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (u.role || '').toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
   return (
     <div className="page-wrapper" style={{ maxWidth: '1280px', paddingBottom: '4rem' }}>
@@ -425,7 +460,7 @@ export default function FirestoreExplorerPage() {
                         </div>
                         <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'flex', gap: '1rem', marginTop: '0.25rem' }}>
                           <span>📍 {trip.destination_name}</span>
-                          <span>💰 ${trip.estimated_budget}</span>
+                          <span>💰 ₹{(trip.estimated_budget || 0).toLocaleString('en-IN')}</span>
                           <span>📅 {trip.itinerary_days?.length || 0} Days</span>
                         </div>
                       </div>
@@ -493,7 +528,7 @@ export default function FirestoreExplorerPage() {
                             {dest.name}
                           </div>
                           <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                            {dest.city}, {dest.country} • ~${dest.estimated_daily_cost}/day
+                            {dest.city}, {dest.country} • ~₹{(dest.estimated_daily_cost || 2500).toLocaleString('en-IN')}/day
                           </div>
                         </div>
                       </div>

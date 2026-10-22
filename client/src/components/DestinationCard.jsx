@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Star, MapPin, DollarSign, Calendar, Sparkles, ArrowRight } from 'lucide-react';
+import { Star, MapPin, IndianRupee, Calendar, Sparkles, ArrowRight } from 'lucide-react';
 
 export default function DestinationCard({ destination, onSelect }) {
   const navigate = useNavigate();
@@ -108,7 +108,7 @@ export default function DestinationCard({ destination, onSelect }) {
               Est. Daily Cost
             </div>
             <div style={{ fontWeight: 800, fontSize: '1.1rem', color: 'var(--primary)' }}>
-              ${destination.estimated_daily_cost || 100}
+              ₹{(destination.estimated_daily_cost || 2500).toLocaleString('en-IN')}
               <span style={{ fontSize: '0.75rem', fontWeight: 500, color: 'var(--text-muted)' }}>/day</span>
             </div>
           </div>

@@ -58,4 +58,10 @@ router.post('/:tripId/packing', expensesController.addPackingItem);
 router.patch('/:tripId/packing/:id', expensesController.togglePackingItem);
 router.delete('/:tripId/packing/:id', expensesController.deletePackingItem);
 
+// --- Trip Photos & Memories ---
+router.get('/:tripId/photos', tripsController.getTripPhotos);
+router.post('/:tripId/photos', tripsController.addTripPhoto);
+router.delete('/:tripId/photos/:photoId', tripsController.deleteTripPhoto);
+router.post('/:tripId/photos/:photoId/like', tripsController.likeTripPhoto);
+
 module.exports = router;

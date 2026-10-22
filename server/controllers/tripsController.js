@@ -121,6 +121,11 @@ async function getTripById(req, res) {
       [id]
     );
 
+    const photos = await db.all(
+      'SELECT * FROM trip_photos WHERE trip_id = ? ORDER BY created_at DESC',
+      [id]
+    );
+
     // Budget analytics
     const totalSpent = expenses.reduce((sum, e) => sum + (parseFloat(e.amount) || 0), 0);
     const estimatedBudget = parseFloat(trip.estimated_budget) || 0;
@@ -140,6 +145,7 @@ async function getTripById(req, res) {
         transportations,
         expenses,
         packing_items: packingItems,
+        photos,
         budget_summary: {
           estimated_budget: estimatedBudget,
           total_spent: totalSpent,
@@ -464,6 +470,110 @@ async function duplicateTrip(req, res) {
   }
 }
 
+async function getTripPhotos(req, res) {
+  try {
+    const { tripId } = req.params;
+    const db = await getDb();
+    const photos = await db.all(
+      `SELECT p.*, u.name as user_name, u.avatar_url as user_avatar
+       FROM trip_photos p
+       LEFT JOIN users u ON p.user_id = u.id
+       WHERE p.trip_id = ?
+       ORDER BY p.created_at DESC`,
+      [tripId]
+    );
+    return res.json({ photos });
+  } catch (err) {
+    console.error('Get trip photos error:', err);
+    return res.status(500).json({ error: 'Failed to fetch trip photos.' });
+  }
+}
+
+async function addTripPhoto(req, res) {
+  try {
+    const { tripId } = req.params;
+    const { photo_url, title, caption, location, taken_date } = req.body;
+
+    if (!photo_url || !photo_url.trim()) {
+      return res.status(400).json({ error: 'Photo URL is required.' });
+    }
+
+    const db = await getDb();
+    const trip = await db.get('SELECT id, status FROM trips WHERE id = ?', [tripId]);
+    if (!trip) {
+      return res.status(404).json({ error: 'Trip not found.' });
+    }
+
+    const result = await db.run(
+      `INSERT INTO trip_photos (trip_id, user_id, photo_url, title, caption, location, taken_date)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [
+        tripId,
+        req.user.id,
+        photo_url.trim(),
+        (title || 'Memorable Moment').trim(),
+        (caption || '').trim(),
+        (location || '').trim(),
+        taken_date || new Date().toISOString().split('T')[0]
+      ]
+    );
+
+    const newPhoto = await db.get(
+      `SELECT p.*, u.name as user_name, u.avatar_url as user_avatar
+       FROM trip_photos p
+       LEFT JOIN users u ON p.user_id = u.id
+       WHERE p.id = ?`,
+      [result.lastID]
+    );
+
+    return res.status(201).json({
+      message: 'Trip photo added successfully!',
+      photo: newPhoto
+    });
+  } catch (err) {
+    console.error('Add trip photo error:', err);
+    return res.status(500).json({ error: 'Failed to post trip photo.' });
+  }
+}
+
+async function deleteTripPhoto(req, res) {
+  try {
+    const { tripId, photoId } = req.params;
+    const db = await getDb();
+
+    const photo = await db.get('SELECT * FROM trip_photos WHERE id = ? AND trip_id = ?', [photoId, tripId]);
+    if (!photo) {
+      return res.status(404).json({ error: 'Photo not found.' });
+    }
+
+    if (photo.user_id !== req.user.id && req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Permission denied to delete this photo.' });
+    }
+
+    await db.run('DELETE FROM trip_photos WHERE id = ?', [photoId]);
+
+    return res.json({ message: 'Trip photo deleted successfully.' });
+  } catch (err) {
+    console.error('Delete trip photo error:', err);
+    return res.status(500).json({ error: 'Failed to delete photo.' });
+  }
+}
+
+async function likeTripPhoto(req, res) {
+  try {
+    const { photoId } = req.params;
+    const db = await getDb();
+
+    await db.run('UPDATE trip_photos SET likes_count = likes_count + 1 WHERE id = ?', [photoId]);
+    const updated = await db.get('SELECT id, likes_count FROM trip_photos WHERE id = ?', [photoId]);
+
+    return res.json({ success: true, likes_count: updated?.likes_count || 0 });
+  } catch (err) {
+    console.error('Like trip photo error:', err);
+    return res.status(500).json({ error: 'Failed to like photo.' });
+  }
+}
+
 module.exports = {
   getUserTrips,
   getTripById,
@@ -471,5 +581,9 @@ module.exports = {
   updateTrip,
   updateTripStatus,
   deleteTrip,
-  duplicateTrip
+  duplicateTrip,
+  getTripPhotos,
+  addTripPhoto,
+  deleteTripPhoto,
+  likeTripPhoto
 };

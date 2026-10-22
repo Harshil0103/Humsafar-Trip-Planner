@@ -142,7 +142,7 @@ export default function InteractiveMap({
                   )}
                   {m.subtitle && <div style={{ fontSize: '0.8rem', color: '#64748b' }}>{m.subtitle}</div>}
                   {m.cost !== undefined && m.cost > 0 && (
-                    <div style={{ fontWeight: 700, color: '#10b981', marginTop: '0.25rem' }}>${m.cost}</div>
+                    <div style={{ fontWeight: 700, color: '#10b981', marginTop: '0.25rem' }}>₹{parseFloat(m.cost || 0).toLocaleString('en-IN')}</div>
                   )}
                 </div>
               </Popup>

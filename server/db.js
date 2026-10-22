@@ -190,6 +190,21 @@ async function initSchema(db) {
       FOREIGN KEY (trip_id) REFERENCES trips(id) ON DELETE CASCADE
     );
 
+    CREATE TABLE IF NOT EXISTS trip_photos (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      trip_id INTEGER NOT NULL,
+      user_id INTEGER NOT NULL,
+      photo_url TEXT NOT NULL,
+      title TEXT NOT NULL,
+      caption TEXT,
+      location TEXT,
+      taken_date DATE,
+      likes_count INTEGER DEFAULT 0,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (trip_id) REFERENCES trips(id) ON DELETE CASCADE,
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    );
+
     -- Indices for high performance queries
     CREATE INDEX IF NOT EXISTS idx_trips_user ON trips(user_id);
     CREATE INDEX IF NOT EXISTS idx_itinerary_days_trip ON itinerary_days(trip_id);
@@ -198,6 +213,7 @@ async function initSchema(db) {
     CREATE INDEX IF NOT EXISTS idx_accommodations_trip ON accommodations(trip_id);
     CREATE INDEX IF NOT EXISTS idx_transportations_trip ON transportations(trip_id);
     CREATE INDEX IF NOT EXISTS idx_expenses_trip ON expenses(trip_id);
+    CREATE INDEX IF NOT EXISTS idx_trip_photos_trip ON trip_photos(trip_id);
   `);
 }
 

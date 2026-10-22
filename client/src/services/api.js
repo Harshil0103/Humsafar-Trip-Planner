@@ -14,97 +14,97 @@ import { db } from './firebase';
 
 const API_BASE = '/api';
 
-// Curated Fallback Destinations in case of network issues
+// Curated Fallback Destinations in case of network issues (Incredible India in ₹ INR)
 const SEED_DESTINATIONS = [
   {
     id: 1,
-    name: 'Kyoto Cultural Discovery',
-    city: 'Kyoto',
-    country: 'Japan',
-    region: 'Asia',
-    description: 'Immerse in ancient shrines, tranquil Zen gardens, bamboo groves, and timeless tea houses in Japan’s historic cultural capital.',
-    image_url: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1200&q=80',
-    estimated_daily_cost: 140,
+    name: 'Jaipur Royal Heritage & Forts',
+    city: 'Jaipur',
+    country: 'India',
+    region: 'North India',
+    description: 'The legendary Pink City of Rajasthan, adorned with magnificent royal hill forts, opulent sandstone palaces, vibrant bazaars, and exquisite Rajasthani cuisine.',
+    image_url: 'https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=1200&q=80',
+    estimated_daily_cost: 3500,
     rating: 4.9,
-    popular_attractions: ['Fushimi Inari Taisha', 'Kinkaku-ji (Golden Pavilion)', 'Arashiyama Bamboo Grove', 'Kiyomizu-dera', 'Gion District'],
-    recommended_activities: ['Traditional Tea Ceremony in Gion', 'Kimono Rental & Photo Walk', 'Morning Meditation at Zen Temple', 'Nishiki Food Market Tasting Tour', 'Sagano Scenic Railway Ride'],
-    latitude: 35.0116,
-    longitude: 135.7681
+    popular_attractions: ['Hawa Mahal', 'Amer Fort', 'City Palace', 'Jantar Mantar', 'Nahargarh Fort'],
+    recommended_activities: ['Hot Air Balloon Ride over Amber Fort', 'Heritage Walking Tour of Old Pink City', 'Traditional Rajasthani Thali Dining', 'Shopping Hand-block Textiles at Johari Bazaar'],
+    latitude: 26.9124,
+    longitude: 75.7873
   },
   {
     id: 2,
-    name: 'Parisian Romance & Art',
-    city: 'Paris',
-    country: 'France',
-    region: 'Europe',
-    description: 'Stroll along the Seine, marvel at world-class masterpieces in the Louvre, and savor delicate pastries in romantic Montmartre.',
-    image_url: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=80',
-    estimated_daily_cost: 190,
-    rating: 4.8,
-    popular_attractions: ['Eiffel Tower', 'Louvre Museum', 'Musée d\'Orsay', 'Cathédrale Notre-Dame', 'Sainte-Chapelle', 'Arc de Triomphe'],
-    recommended_activities: ['Sunset Cruise on the River Seine', 'Pastry & Macaron Masterclass in Le Marais', 'Louvre Night Tour', 'Montmartre Artists Walking Tour'],
-    latitude: 48.8566,
-    longitude: 2.3522
+    name: 'Kerala Backwaters & Tea Gardens',
+    city: 'Alleppey & Munnar',
+    country: 'India',
+    region: 'South India',
+    description: 'God’s Own Country, famed for emerald backwater canals, traditional slow-paced houseboats, misty aromatic tea gardens, and rejuvenating Ayurvedic wellness.',
+    image_url: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=80',
+    estimated_daily_cost: 4200,
+    rating: 4.9,
+    popular_attractions: ['Vembanad Lake Backwaters', 'Munnar Tea Plantations', 'Eravikulam National Park', 'Marari Beach'],
+    recommended_activities: ['Overnight Luxury Houseboat Cruise', 'Kathakali Traditional Dance Performance', 'Authentic Kerala Ayurvedic Spa', 'Tea Factory Tasting Tour'],
+    latitude: 9.4981,
+    longitude: 76.3388
   },
   {
     id: 3,
-    name: 'Eternal Wonders of Rome',
-    city: 'Rome',
-    country: 'Italy',
-    region: 'Europe',
-    description: 'Step into millennia of history amidst ancient amphitheatres, Renaissance basilicas, vibrant piazzas, and authentic trattorias.',
-    image_url: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=1200&q=80',
-    estimated_daily_cost: 160,
-    rating: 4.9,
-    popular_attractions: ['Colosseum & Roman Forum', 'Vatican Museums & Sistine Chapel', 'Pantheon', 'Trevi Fountain', 'Piazza Navona'],
-    recommended_activities: ['Underground Colosseum VIP Tour', 'Trastevere Evening Food & Wine Walking Tour', 'Fresh Pasta Cooking Class', 'Vespa Scooter City Safari'],
-    latitude: 41.9028,
-    longitude: 12.4964
+    name: 'Varanasi Eternal Ghats & Ganges',
+    city: 'Varanasi',
+    country: 'India',
+    region: 'North India',
+    description: 'One of the world’s oldest continuously inhabited spiritual cities, situated on the sacred banks of the Holy River Ganga with soul-stirring evening aartis.',
+    image_url: 'https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=1200&q=80',
+    estimated_daily_cost: 2400,
+    rating: 4.8,
+    popular_attractions: ['Dashashwamedh Ghat', 'Kashi Vishwanath Temple', 'Assi Ghat', 'Sarnath Sanctuary'],
+    recommended_activities: ['Sunrise Boat Ride on the Holy Ganges', 'Witnessing Grand Evening Ganga Aarti', 'Silk Saree Weaving Studio Exploration', 'Street Food Tasting: Banarasi Kachori & Paan'],
+    latitude: 25.3176,
+    longitude: 82.9739
   },
   {
     id: 4,
-    name: 'Bali Tropical Haven',
-    city: 'Ubud & Seminyak',
-    country: 'Indonesia',
-    region: 'Asia',
-    description: 'Discover lush terraced rice paddies, serene cliffside temples, world-class yoga retreats, and mesmerizing ocean sunsets.',
-    image_url: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1200&q=80',
-    estimated_daily_cost: 85,
+    name: 'Goa Golden Shores & Heritage',
+    city: 'Panaji & South Goa',
+    country: 'India',
+    region: 'West India',
+    description: 'India’s ultimate sun-kissed coastal haven featuring golden sandy beaches, Portuguese heritage churches, lively beach shacks, water adventures, and vibrant music.',
+    image_url: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=80',
+    estimated_daily_cost: 3800,
     rating: 4.8,
-    popular_attractions: ['Uluwatu Temple Sunset', 'Tegallalang Rice Terraces', 'Sacred Monkey Forest Sanctuary', 'Tanah Lot Sea Temple', 'Mount Batur Volcano'],
-    recommended_activities: ['Mount Batur Sunrise Trekking', 'Traditional Balinese Spa & Massage', 'Ubud Artisan Silver Jewelry Workshop', 'Surf Lesson at Canggu Beach'],
-    latitude: -8.4095,
-    longitude: 115.1889
+    popular_attractions: ['Palolem Beach', 'Basilica of Bom Jesus', 'Dudhsagar Waterfall', 'Fort Aguada', 'Fontainhas Latin Quarter'],
+    recommended_activities: ['Sunset Catamaran & Dolphin Cruise', 'Scuba Diving at Grande Island', 'Fontainhas Portuguese Heritage Walk', 'Spice Plantation Tour with Goan Lunch'],
+    latitude: 15.2993,
+    longitude: 74.1240
   },
   {
     id: 5,
-    name: 'Swiss Alpine Majesty',
-    city: 'Interlaken & Zermatt',
-    country: 'Switzerland',
-    region: 'Europe',
-    description: 'Breathtaking glacier peaks, turquoise alpine lakes, legendary cogwheel trains, and chocolate tasting in the heart of the Alps.',
-    image_url: 'https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?auto=format&fit=crop&w=1200&q=80',
-    estimated_daily_cost: 220,
+    name: 'Agra City of the Taj Mahal',
+    city: 'Agra',
+    country: 'India',
+    region: 'North India',
+    description: 'Home to the immortal Taj Mahal—the world’s ultimate monument of eternal love—surrounded by majestic Mughal citadels, gardens, and royal tombs.',
+    image_url: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=1200&q=80',
+    estimated_daily_cost: 3200,
     rating: 4.9,
-    popular_attractions: ['Jungfraujoch – Top of Europe', 'Matterhorn Glacier Paradise', 'Lake Brienz & Lake Thun', 'Lauterbrunnen Valley of 72 Waterfalls'],
-    recommended_activities: ['Scenic Glacier Express Train Journey', 'Paragliding over Interlaken Valley', 'Swiss Cheese & Chocolate Tasting Tour', 'First Cliff Walk Experience'],
-    latitude: 46.6863,
-    longitude: 7.8632
+    popular_attractions: ['The Taj Mahal', 'Agra Fort Citadel', 'Fatehpur Sikri Imperial Ruins', 'Mehtab Bagh Moonlight Garden'],
+    recommended_activities: ['Sunrise Photography Tour at Taj Mahal', 'Sunset Reflection View from Mehtab Bagh', 'Mughlai Culinary & Petha Sweets Safari', 'Excursion to Fatehpur Sikri'],
+    latitude: 27.1767,
+    longitude: 78.0081
   },
   {
     id: 6,
-    name: 'New York City Lights',
-    city: 'New York',
-    country: 'United States',
-    region: 'North America',
-    description: 'The energetic crossroads of global culture, iconic soaring skyscrapers, Broadway shows, Central Park serenity, and diverse world cuisines.',
-    image_url: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&w=1200&q=80',
-    estimated_daily_cost: 250,
-    rating: 4.7,
-    popular_attractions: ['Central Park', 'Times Square & Broadway', 'Empire State Building', 'Statue of Liberty', 'The High Line & Hudson Yards'],
-    recommended_activities: ['Broadway Musical Evening Show', 'Sunset Walk across Brooklyn Bridge', 'Helicopter Flight over Manhattan Skyline', 'Secret Food Tour in Greenwich Village'],
-    latitude: 40.7128,
-    longitude: -74.0060
+    name: 'Leh-Ladakh Land of High Passes',
+    city: 'Leh',
+    country: 'India',
+    region: 'Himalayas',
+    description: 'The enchanting high-altitude desert surrounded by soaring snow peaks, sapphire glacial lakes, dramatic mountain passes, and ancient cliffside Buddhist monasteries.',
+    image_url: 'https://images.unsplash.com/photo-1581793745862-99fde7fa73d2?auto=format&fit=crop&w=1200&q=80',
+    estimated_daily_cost: 4800,
+    rating: 4.9,
+    popular_attractions: ['Pangong Tso Blue Lake', 'Nubra Valley Sand Dunes', 'Khardung La Pass', 'Thiksey & Hemis Monasteries'],
+    recommended_activities: ['Double-Humped Bactrian Camel Ride in Nubra', 'Star-Gazing Camping under Himalayan Skies', 'Rafting on Zanskar River Rapids', 'Riding Motorbike across Khardung La'],
+    latitude: 34.1526,
+    longitude: 77.5771
   }
 ];
 
@@ -224,31 +224,19 @@ export const api = {
       const { email } = credentials || {};
       const cleanEmail = (email || '').trim().toLowerCase();
 
-      // Demo accounts support
-      if (cleanEmail === 'admin@tripplanner.com') {
-        const adminUser = {
-          id: 'admin_1',
-          name: 'Alex Vance (Administrator)',
-          email: 'admin@tripplanner.com',
+      // Support primary user hp835711@gmail.com
+      if (cleanEmail === 'hp835711@gmail.com') {
+        const primaryUser = {
+          id: 'user_hp835711',
+          name: 'Harshil Patel',
+          email: 'hp835711@gmail.com',
           role: 'admin',
-          avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80'
+          avatar_url: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80',
+          bio: 'Humsafar Explorer & Master Trip Planner.'
         };
-        const token = `humsafar_jwt_token_admin_${Date.now()}`;
-        setCurrentUser(adminUser, token);
-        return { user: adminUser, token };
-      }
-
-      if (cleanEmail === 'traveler@tripplanner.com') {
-        const travelerUser = {
-          id: 'traveler_2',
-          name: 'Sarah Jenkins',
-          email: 'traveler@tripplanner.com',
-          role: 'user',
-          avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80'
-        };
-        const token = `humsafar_jwt_token_traveler_${Date.now()}`;
-        setCurrentUser(travelerUser, token);
-        return { user: travelerUser, token };
+        const token = `humsafar_jwt_token_hp_${Date.now()}`;
+        setCurrentUser(primaryUser, token);
+        return { user: primaryUser, token };
       }
 
       // Query from Cloud Firestore
@@ -720,8 +708,79 @@ export const api = {
   togglePackingItem: (tripId, id) => request(`/trips/${tripId}/packing/${id}`, { method: 'PATCH' }).catch(() => ({ success: true })),
   deletePackingItem: (tripId, id) => request(`/trips/${tripId}/packing/${id}`, { method: 'DELETE' }).catch(() => ({ success: true })),
 
+  // --- Trip Famous Photos & Memories ---
+  getTripPhotos: async (tripId) => {
+    try {
+      return await request(`/trips/${tripId}/photos`);
+    } catch (err) {
+      try {
+        const snap = await getDocs(collection(db, 'trips', String(tripId), 'photos'));
+        const photos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        return { photos };
+      } catch (e) {
+        return { photos: [] };
+      }
+    }
+  },
+
+  addTripPhoto: async (tripId, photoData) => {
+    try {
+      const res = await request(`/trips/${tripId}/photos`, { method: 'POST', body: photoData });
+      // Sync to Firestore for real-time cloud reflection
+      try {
+        const photoToSync = res.photo || photoData;
+        await setDoc(doc(db, 'trips', String(tripId), 'photos', String(photoToSync.id || Date.now())), photoToSync, { merge: true });
+      } catch (e) {}
+      return res;
+    } catch (err) {
+      const user = getCurrentUser();
+      const photoId = `photo_${Date.now()}`;
+      const newPhoto = {
+        id: photoId,
+        trip_id: tripId,
+        user_id: user?.id || 'guest',
+        user_name: user?.name || 'Harshil Patel',
+        user_avatar: user?.avatar_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80',
+        photo_url: photoData.photo_url,
+        title: photoData.title || 'Memorable Moment',
+        caption: photoData.caption || '',
+        location: photoData.location || '',
+        taken_date: photoData.taken_date || new Date().toISOString().split('T')[0],
+        likes_count: 0,
+        created_at: new Date().toISOString()
+      };
+      try {
+        await setDoc(doc(db, 'trips', String(tripId), 'photos', photoId), newPhoto, { merge: true });
+      } catch (e) {}
+      return { message: 'Trip photo added successfully!', photo: newPhoto };
+    }
+  },
+
+  deleteTripPhoto: async (tripId, photoId) => {
+    try {
+      const res = await request(`/trips/${tripId}/photos/${photoId}`, { method: 'DELETE' });
+      try {
+        await deleteDoc(doc(db, 'trips', String(tripId), 'photos', String(photoId)));
+      } catch (e) {}
+      return res;
+    } catch (err) {
+      try {
+        await deleteDoc(doc(db, 'trips', String(tripId), 'photos', String(photoId)));
+      } catch (e) {}
+      return { success: true };
+    }
+  },
+
+  likeTripPhoto: async (tripId, photoId) => {
+    try {
+      return await request(`/trips/${tripId}/photos/${photoId}/like`, { method: 'POST' });
+    } catch (err) {
+      return { success: true, likes_count: 1 };
+    }
+  },
+
   // --- Admin ---
-  getAdminStats: () => request('/admin/stats').catch(() => ({ stats: { users_count: 14, trips_count: 15, destinations_count: 14 } })),
+  getAdminStats: () => request('/admin/stats').catch(() => ({ stats: { users_count: 1, trips_count: 3, destinations_count: 14 } })),
   getAdminUsers: () => request('/admin/users').catch(() => ({ users: [] })),
   updateUserRole: (id, role) => request(`/admin/users/${id}/role`, { method: 'PATCH', body: { role } }).catch(() => ({ success: true })),
   deleteUser: (id) => request(`/admin/users/${id}`, { method: 'DELETE' }).catch(() => ({ success: true }))

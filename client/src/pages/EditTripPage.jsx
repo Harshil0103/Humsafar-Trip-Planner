@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
-  Briefcase, Calendar, MapPin, Users, DollarSign, Image as ImageIcon,
+  Briefcase, Calendar, MapPin, Users, IndianRupee, Image as ImageIcon,
   Save, ArrowLeft, Trash2, AlertCircle
 } from 'lucide-react';
 import api from '../services/api';
@@ -198,13 +198,13 @@ export default function EditTripPage() {
             </div>
 
             <div className="form-group">
-              <label className="form-label" htmlFor="edit-budget">Estimated Budget ($ USD)</label>
+              <label className="form-label" htmlFor="edit-budget">Estimated Budget (₹ INR)</label>
               <input
                 type="number"
                 id="edit-budget"
                 className="form-input"
                 min="0"
-                step="50"
+                step="500"
                 value={estimatedBudget}
                 onChange={(e) => setEstimatedBudget(e.target.value)}
               />

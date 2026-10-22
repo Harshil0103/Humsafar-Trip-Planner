@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
-  Briefcase, Calendar, MapPin, Users, DollarSign, Image as ImageIcon,
+  Briefcase, Calendar, MapPin, Users, IndianRupee, Image as ImageIcon,
   Sparkles, ArrowLeft, Check, Compass, Info
 } from 'lucide-react';
 import api from '../services/api';
@@ -10,14 +10,14 @@ import { useAuth } from '../context/AuthContext';
 import { saveTripToFirestore } from '../services/firebase';
 
 const CURATED_COVERS = [
-  { name: 'Kyoto Torii', url: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1200&q=80' },
-  { name: 'Parisian Sunset', url: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=80' },
-  { name: 'Rome Colosseum', url: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=1200&q=80' },
-  { name: 'Bali Palms', url: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1200&q=80' },
-  { name: 'Swiss Alps', url: 'https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?auto=format&fit=crop&w=1200&q=80' },
-  { name: 'New York Skyline', url: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&w=1200&q=80' },
-  { name: 'Santorini Blue', url: 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=1200&q=80' },
-  { name: 'Icelandic Aurora', url: 'https://images.unsplash.com/photo-1504893524553-b855bce32c67?auto=format&fit=crop&w=1200&q=80' }
+  { name: 'Jaipur Hawa Mahal', url: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=1200&q=80' },
+  { name: 'Agra Taj Mahal', url: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=1200&q=80' },
+  { name: 'Kerala Backwaters', url: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=80' },
+  { name: 'Varanasi Ghats', url: 'https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=1200&q=80' },
+  { name: 'Amritsar Golden Temple', url: 'https://images.unsplash.com/photo-1588096344356-9a4057861e69?auto=format&fit=crop&w=1200&q=80' },
+  { name: 'Ladakh Pangong Tso', url: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=1200&q=80' },
+  { name: 'Udaipur Lake Palace', url: 'https://images.unsplash.com/photo-1595658658481-d53d3f999875?auto=format&fit=crop&w=1200&q=80' },
+  { name: 'Goa Palm Beach', url: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=80' }
 ];
 
 export default function CreateTripPage() {
@@ -39,7 +39,7 @@ export default function CreateTripPage() {
   const [startDate, setStartDate] = useState(today);
   const [endDate, setEndDate] = useState(nextWeek);
   const [travelersCount, setTravelersCount] = useState(2);
-  const [estimatedBudget, setEstimatedBudget] = useState('2000');
+  const [estimatedBudget, setEstimatedBudget] = useState('25000');
   const [description, setDescription] = useState('');
   const [coverImage, setCoverImage] = useState(CURATED_COVERS[0].url);
   const [destinationsList, setDestinationsList] = useState([]);
@@ -267,20 +267,20 @@ export default function CreateTripPage() {
             </div>
 
             <div className="form-group">
-              <label className="form-label" htmlFor="estimated-budget">Estimated Budget ($ USD)</label>
+              <label className="form-label" htmlFor="estimated-budget">Estimated Budget (₹ INR)</label>
               <div style={{ position: 'relative' }}>
                 <input
                   type="number"
                   id="estimated-budget"
                   className="form-input"
                   min="0"
-                  step="50"
-                  placeholder="2500"
+                  step="500"
+                  placeholder="25000"
                   value={estimatedBudget}
                   onChange={(e) => setEstimatedBudget(e.target.value)}
                   style={{ paddingLeft: '2.4rem' }}
                 />
-                <DollarSign size={18} color="var(--text-muted)" style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)' }} />
+                <IndianRupee size={18} color="var(--text-muted)" style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)' }} />
               </div>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Shield, Users, Globe, Briefcase, DollarSign, Plus, Trash2, Edit3,
+  Shield, Users, Globe, Briefcase, IndianRupee, Plus, Trash2, Edit3,
   CheckCircle2, AlertCircle, Sparkles, Star, MapPin, X
 } from 'lucide-react';
 import api from '../services/api';
@@ -20,9 +20,9 @@ export default function AdminDashboardPage() {
   const [destModalOpen, setDestModalOpen] = useState(false);
   const [editingDest, setEditingDest] = useState(null);
   const [destForm, setDestForm] = useState({
-    name: '', country: '', city: '', region: 'Europe', description: '', image_url: '',
-    popular_attractions: '', recommended_activities: '', estimated_daily_cost: '120',
-    best_time_to_visit: 'May – September', rating: '4.8'
+    name: '', country: 'India', city: '', region: 'North India', description: '', image_url: '',
+    popular_attractions: '', recommended_activities: '', estimated_daily_cost: '3000',
+    best_time_to_visit: 'October – March', rating: '4.8'
   });
 
   useEffect(() => {
@@ -202,10 +202,10 @@ export default function AdminDashboardPage() {
 
             <div className="card" style={{ padding: '1.5rem', background: 'var(--bg-subtle)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', fontSize: '0.85rem', fontWeight: 600, textTransform: 'uppercase' }}>
-                <DollarSign size={16} color="#f59e0b" /> Logged Spend Total
+                <IndianRupee size={16} color="#f59e0b" /> Logged Spend Total
               </div>
               <div style={{ fontSize: '2rem', fontWeight: 800, fontFamily: 'Outfit', marginTop: '0.5rem' }}>
-                ${(stats?.total_expenses || 0).toLocaleString()}
+                ₹{(stats?.total_expenses || 0).toLocaleString('en-IN')}
               </div>
             </div>
           </div>
@@ -300,7 +300,7 @@ export default function AdminDashboardPage() {
                     </td>
                     <td style={{ padding: '0.85rem 1rem', color: 'var(--text-muted)' }}>{d.city}, {d.country}</td>
                     <td style={{ padding: '0.85rem 1rem' }}><span className="badge badge-neutral">{d.region}</span></td>
-                    <td style={{ padding: '0.85rem 1rem', fontWeight: 600, color: 'var(--primary)' }}>${d.estimated_daily_cost}/day</td>
+                    <td style={{ padding: '0.85rem 1rem', fontWeight: 600, color: 'var(--primary)' }}>₹{(d.estimated_daily_cost || 2500).toLocaleString('en-IN')}/day</td>
                     <td style={{ padding: '0.85rem 1rem' }}>★ {d.rating}</td>
                     <td style={{ padding: '0.85rem 1rem', textAlign: 'center' }}>
                       <div style={{ display: 'flex', justifyContent: 'center', gap: '0.35rem' }}>
@@ -462,22 +462,20 @@ export default function AdminDashboardPage() {
                 value={destForm.region}
                 onChange={(e) => setDestForm({ ...destForm, region: e.target.value })}
               >
-                <option value="Asia">Asia</option>
-                <option value="Europe">Europe</option>
-                <option value="North America">North America</option>
-                <option value="South America">South America</option>
-                <option value="Africa">Africa</option>
-                <option value="Oceania">Oceania</option>
-                <option value="Americas">Americas</option>
+                <option value="North India">North India</option>
+                <option value="South India">South India</option>
+                <option value="West India">West India</option>
+                <option value="East India">East India</option>
+                <option value="Himalayas">Himalayas</option>
               </select>
             </div>
 
             <div className="form-group">
-              <label className="form-label">Est. Daily Cost ($)</label>
+              <label className="form-label">Est. Daily Cost (₹ INR)</label>
               <input
                 type="number"
-                min="10"
-                step="5"
+                min="500"
+                step="100"
                 className="form-input"
                 value={destForm.estimated_daily_cost}
                 onChange={(e) => setDestForm({ ...destForm, estimated_daily_cost: e.target.value })}

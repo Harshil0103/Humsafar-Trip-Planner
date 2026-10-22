@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
-  Globe, Search, Filter, Star, MapPin, DollarSign, Calendar, Sparkles,
+  Globe, Search, Filter, Star, MapPin, IndianRupee, Calendar, Sparkles,
   ArrowRight, X, SlidersHorizontal
 } from 'lucide-react';
 import api from '../services/api';
@@ -28,7 +28,7 @@ export default function DestinationsPage() {
   const [searchTerm, setSearchTerm] = useState(searchInitial);
   const [selectedRegion, setSelectedRegion] = useState(regionInitial);
   const [selectedSort, setSelectedSort] = useState(sortInitial);
-  const [maxCost, setMaxCost] = useState(300);
+  const [maxCost, setMaxCost] = useState(10000);
 
   useEffect(() => {
     fetchDestinations();
@@ -39,7 +39,7 @@ export default function DestinationsPage() {
     try {
       const params = {
         sort: selectedSort,
-        maxCost: maxCost < 300 ? maxCost : undefined,
+        maxCost: maxCost < 10000 ? maxCost : undefined,
         region: selectedRegion !== 'All' ? selectedRegion : undefined,
         search: searchTerm.trim() || undefined
       };
@@ -62,10 +62,10 @@ export default function DestinationsPage() {
     setSearchTerm('');
     setSelectedRegion('All');
     setSelectedSort('rating');
-    setMaxCost(300);
+    setMaxCost(10000);
   }
 
-  const regions = ['All', 'Asia', 'Europe', 'North America', 'Africa', 'Oceania', 'Americas'];
+  const regions = ['All', 'North India', 'South India', 'West India', 'East India', 'Himalayas'];
 
   return (
     <div className="page-wrapper">
@@ -73,11 +73,11 @@ export default function DestinationsPage() {
       {/* Header Banner */}
       <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', color: 'var(--primary)', fontWeight: 700, fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
-          <Globe size={16} /> Global Destination Discovery
+          <Sparkles size={16} /> Incredible India Discovery
         </div>
-        <h1 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '0.75rem' }}>Explore Iconic Travel Destinations</h1>
+        <h1 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '0.75rem' }}>Explore Iconic Indian Destinations</h1>
         <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', maxWidth: '640px', margin: '0 auto' }}>
-          Discover handpicked cities and natural wonders across every continent, complete with local highlights and budget estimates.
+          Discover handpicked royal heritage cities, serene tropical backwaters, and Himalayan escapes with local highlights and INR estimates.
         </p>
       </div>
 
@@ -151,18 +151,18 @@ export default function DestinationsPage() {
           {/* Max Cost Filter */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
             <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 600 }}>
-              Max Daily Cost: <strong style={{ color: 'var(--primary)' }}>${maxCost}</strong>
+              Max Daily Cost: <strong style={{ color: 'var(--primary)' }}>₹{maxCost.toLocaleString('en-IN')}</strong>
             </span>
             <input
               type="range"
-              min="50"
-              max="300"
-              step="25"
+              min="1000"
+              max="10000"
+              step="500"
               value={maxCost}
               onChange={(e) => setMaxCost(parseInt(e.target.value, 10))}
-              style={{ width: '120px', cursor: 'pointer' }}
+              style={{ width: '130px', cursor: 'pointer' }}
             />
-            {(searchTerm || selectedRegion !== 'All' || maxCost < 300) && (
+            {(searchTerm || selectedRegion !== 'All' || maxCost < 10000) && (
               <button onClick={clearFilters} className="btn btn-secondary btn-sm" style={{ padding: '0.3rem 0.6rem' }}>
                 <X size={14} /> Clear
               </button>
@@ -205,7 +205,7 @@ export default function DestinationsPage() {
             <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
               <div>
                 <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Estimated Daily Cost: </span>
-                <strong style={{ color: 'var(--primary)', fontSize: '1.1rem' }}>${selectedDestination.estimated_daily_cost}/day</strong>
+                <strong style={{ color: 'var(--primary)', fontSize: '1.1rem' }}>₹{(selectedDestination.estimated_daily_cost || 2500).toLocaleString('en-IN')}/day</strong>
               </div>
               <button
                 onClick={() => {

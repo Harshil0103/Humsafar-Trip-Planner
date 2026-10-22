@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, MapPin, Users, DollarSign, Copy, Trash2, Edit3, ArrowRight, Clock } from 'lucide-react';
+import { Calendar, MapPin, Users, IndianRupee, Copy, Trash2, Edit3, ArrowRight, Clock, Camera } from 'lucide-react';
 
 function formatDateRange(startDate, endDate) {
   if (!startDate || !endDate) return '';
@@ -36,7 +36,7 @@ export default function TripCard({ trip, onDuplicate, onDelete }) {
       {/* Cover Image Container */}
       <div style={{ position: 'relative', height: '180px', overflow: 'hidden' }}>
         <img
-          src={trip.cover_image || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80'}
+          src={trip.cover_image || 'https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=800&q=80'}
           alt={trip.title}
           style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.4s ease' }}
           className="trip-card-image"
@@ -50,8 +50,24 @@ export default function TripCard({ trip, onDuplicate, onDelete }) {
           background: 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.7) 100%)'
         }} />
 
-        {/* Status Pill Badge */}
-        <div style={{ position: 'absolute', top: '1rem', right: '1rem' }}>
+        {/* Status Pill Badge & Completed Photo Tag */}
+        <div style={{ position: 'absolute', top: '1rem', right: '1rem', display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
+          {trip.status === 'completed' && (
+            <span style={{
+              background: '#10b981',
+              color: '#ffffff',
+              fontSize: '0.72rem',
+              fontWeight: 700,
+              padding: '0.2rem 0.5rem',
+              borderRadius: 'var(--radius-full)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.25rem',
+              boxShadow: '0 2px 6px rgba(0,0,0,0.2)'
+            }}>
+              <Camera size={12} /> Memories
+            </span>
+          )}
           <span className={`status-pill status-${trip.status || 'planning'}`}>
             {trip.status || 'planning'}
           </span>
@@ -102,7 +118,7 @@ export default function TripCard({ trip, onDuplicate, onDelete }) {
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.35rem' }}>
               <span style={{ color: 'var(--text-muted)' }}>Budget Progress</span>
               <span style={{ color: totalSpent > budget ? 'var(--danger)' : 'var(--text-main)' }}>
-                ${totalSpent.toLocaleString()} / ${budget.toLocaleString()}
+                ₹{totalSpent.toLocaleString('en-IN')} / ₹{budget.toLocaleString('en-IN')}
               </span>
             </div>
             <div style={{ width: '100%', height: '6px', background: 'var(--bg-subtle)', borderRadius: '3px', overflow: 'hidden' }}>

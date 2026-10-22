@@ -1,5 +1,5 @@
 import React from 'react';
-import { DollarSign, PieChart, TrendingUp, AlertTriangle, CheckCircle2 } from 'lucide-react';
+import { IndianRupee, PieChart, TrendingUp, AlertTriangle, CheckCircle2 } from 'lucide-react';
 
 const CATEGORY_COLORS = {
   Accommodation: '#4f46e5',   // Indigo
@@ -37,7 +37,7 @@ export default function BudgetChart({ estimatedBudget = 0, expenses = [], catego
             Estimated Budget
           </div>
           <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--text-main)', fontFamily: 'Outfit' }}>
-            ${budget.toLocaleString()}
+            ₹{budget.toLocaleString('en-IN')}
           </div>
         </div>
 
@@ -47,7 +47,7 @@ export default function BudgetChart({ estimatedBudget = 0, expenses = [], catego
             Total Logged Expenses
           </div>
           <div style={{ fontSize: '1.5rem', fontWeight: 800, color: isOver ? 'var(--danger)' : 'var(--primary)', fontFamily: 'Outfit' }}>
-            ${totalSpent.toLocaleString()}
+            ₹{totalSpent.toLocaleString('en-IN')}
           </div>
         </div>
 
@@ -57,7 +57,7 @@ export default function BudgetChart({ estimatedBudget = 0, expenses = [], catego
             {isOver ? 'Over Budget By' : 'Remaining Budget'}
           </div>
           <div style={{ fontSize: '1.5rem', fontWeight: 800, color: isOver ? 'var(--danger)' : 'var(--success)', fontFamily: 'Outfit' }}>
-            ${Math.abs(remaining).toLocaleString()}
+            ₹{Math.abs(remaining).toLocaleString('en-IN')}
           </div>
         </div>
       </div>
@@ -112,7 +112,7 @@ export default function BudgetChart({ estimatedBudget = 0, expenses = [], catego
             {categories.map((cat, idx) => (
               <div
                 key={idx}
-                title={`${cat.category}: $${cat.amount.toLocaleString()} (${cat.percent}%)`}
+                title={`${cat.category}: ₹${cat.amount.toLocaleString('en-IN')} (${cat.percent}%)`}
                 style={{
                   width: `${cat.percent}%`,
                   height: '100%',
@@ -140,7 +140,7 @@ export default function BudgetChart({ estimatedBudget = 0, expenses = [], catego
                     {cat.category}
                   </div>
                   <div style={{ fontWeight: 700, fontSize: '0.95rem' }}>
-                    ${cat.amount.toLocaleString()}{' '}
+                    ₹{cat.amount.toLocaleString('en-IN')}{' '}
                     <span style={{ fontSize: '0.75rem', fontWeight: 500, color: 'var(--text-muted)' }}>({cat.percent}%)</span>
                   </div>
                 </div>

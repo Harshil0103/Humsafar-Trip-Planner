@@ -3,213 +3,213 @@ const { getDb } = require('./db');
 
 const SEED_DESTINATIONS = [
   {
-    name: 'Kyoto Cultural Discovery',
-    country: 'Japan',
-    city: 'Kyoto',
-    region: 'Asia',
-    description: 'Immerse in ancient shrines, tranquil Zen gardens, bamboo groves, and timeless tea houses in Japan’s historic cultural capital.',
-    image_url: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1200&q=80',
-    popular_attractions: ['Fushimi Inari Taisha', 'Kinkaku-ji (Golden Pavilion)', 'Arashiyama Bamboo Grove', 'Kiyomizu-dera', 'Gion District'],
-    recommended_activities: ['Traditional Tea Ceremony in Gion', 'Kimono Rental & Photo Walk', 'Morning Meditation at Zen Temple', 'Nishiki Food Market Tasting Tour', 'Sagano Scenic Railway Ride'],
-    estimated_daily_cost: 140,
-    best_time_to_visit: 'March – May & October – November',
-    latitude: 35.0116,
-    longitude: 135.7681,
+    name: 'Jaipur Royal Heritage & Forts',
+    country: 'India',
+    city: 'Jaipur',
+    region: 'North India',
+    description: 'The legendary Pink City of Rajasthan, adorned with magnificent royal hill forts, opulent sandstone palaces, vibrant bazaars, and exquisite Rajasthani cuisine.',
+    image_url: 'https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=1200&q=80',
+    popular_attractions: ['Hawa Mahal (Palace of Winds)', 'Amer Fort & Maota Lake', 'City Palace & Museum', 'Jantar Mantar Observatory', 'Nahargarh Fort Sunset Point'],
+    recommended_activities: ['Hot Air Balloon Ride over Amber Fort', 'Heritage Walking Tour of Old Pink City', 'Traditional Rajasthani Thali Dining at Chokhi Dhani', 'Shopping Hand-block Textiles at Johari Bazaar', 'Elephant Village Sanctuary Visit'],
+    estimated_daily_cost: 3500,
+    best_time_to_visit: 'October – March',
+    latitude: 26.9124,
+    longitude: 75.7873,
     rating: 4.9
   },
   {
-    name: 'Parisian Romance & Art',
-    country: 'France',
-    city: 'Paris',
-    region: 'Europe',
-    description: 'The City of Light captivates with world-class museums, iconic monuments, tree-lined boulevards, and exquisite French gastronomy.',
-    image_url: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=80',
-    popular_attractions: ['Eiffel Tower', 'Louvre Museum', 'Musée d’Orsay', 'Notre-Dame Cathedral', 'Montmartre & Sacré-Cœur'],
-    recommended_activities: ['Seine River Sunset Cruise', 'Pastry & Croissant Masterclass', 'Skip-the-Line Louvre Guided Tour', 'Wine & Cheese Tasting in Le Marais', 'Day Trip to Palace of Versailles'],
-    estimated_daily_cost: 190,
-    best_time_to_visit: 'April – June & September – November',
-    latitude: 48.8566,
-    longitude: 2.3522,
-    rating: 4.8
-  },
-  {
-    name: 'Eternal Wonders of Rome',
-    country: 'Italy',
-    city: 'Rome',
-    region: 'Europe',
-    description: 'Walk through thousands of years of living history, majestic Roman architecture, bustling piazzas, and authentic Italian trattorias.',
-    image_url: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=1200&q=80',
-    popular_attractions: ['Colosseum & Roman Forum', 'Vatican Museums & Sistine Chapel', 'Trevi Fountain', 'Pantheon', 'Piazza Navona'],
-    recommended_activities: ['Colosseum Underground Tour', 'Handmade Pasta & Gelato Cooking Class', 'Trastevere Evening Food Safari', 'Vespa Tour around Ancient Monuments', 'Borghese Gallery Masterpieces Tour'],
-    estimated_daily_cost: 160,
-    best_time_to_visit: 'April – May & September – October',
-    latitude: 41.9028,
-    longitude: 12.4964,
+    name: 'Kerala Backwaters & Tea Gardens',
+    country: 'India',
+    city: 'Alleppey & Munnar',
+    region: 'South India',
+    description: 'God’s Own Country, famed for emerald backwater canals, traditional slow-paced houseboats, misty aromatic tea gardens, and rejuvenating Ayurvedic wellness.',
+    image_url: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=80',
+    popular_attractions: ['Vembanad Lake Backwaters', 'Munnar Tea Plantations', 'Eravikulam National Park (Nilgiri Tahr)', 'Marari Beach', 'Athirappilly Waterfalls'],
+    recommended_activities: ['Overnight Luxury Houseboat Cruise', 'Kathakali Traditional Dance Performance', 'Authentic Kerala Ayurvedic Spa Therapy', 'Tea Factory Tasting Tour in Munnar', 'Canoeing through Village Canals'],
+    estimated_daily_cost: 4200,
+    best_time_to_visit: 'September – March',
+    latitude: 9.4981,
+    longitude: 76.3388,
     rating: 4.9
   },
   {
-    name: 'Bali Tropical Haven',
-    country: 'Indonesia',
-    city: 'Ubud & Seminyak',
-    region: 'Asia',
-    description: 'A paradise of emerald rice terraces, sacred volcanic temples, holistic wellness retreats, and vibrant beach sunsets.',
-    image_url: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1200&q=80',
-    popular_attractions: ['Tegallalang Rice Terraces', 'Sacred Monkey Forest', 'Uluwatu Temple', 'Mount Batur Volcano', 'Nusa Penida Island'],
-    recommended_activities: ['Sunrise Trekking at Mount Batur', 'Traditional Balinese Spa & Yoga Sanctuary', 'Snorkeling with Manta Rays at Nusa Penida', 'Waterfall Hopping in North Bali', 'Sunset Seafood Dinner in Jimbaran Bay'],
-    estimated_daily_cost: 75,
-    best_time_to_visit: 'April – October',
-    latitude: -8.4095,
-    longitude: 115.1889,
+    name: 'Varanasi Eternal Ghats & Ganges',
+    country: 'India',
+    city: 'Varanasi',
+    region: 'North India',
+    description: 'One of the world’s oldest continuously inhabited spiritual cities, situated on the sacred banks of the Holy River Ganga with soul-stirring evening aartis.',
+    image_url: 'https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=1200&q=80',
+    popular_attractions: ['Dashashwamedh Ghat', 'Kashi Vishwanath Golden Temple', 'Assi Ghat', 'Manikarnika Ghat', 'Sarnath Buddhist Sanctuary'],
+    recommended_activities: ['Sunrise Boat Ride on the Holy Ganges', 'Witnessing Grand Evening Ganga Aarti', 'Silk Saree Weaving Studio Exploration', 'Street Food Tasting: Banarasi Kachori & Paan', 'Heritage Morning Yoga by the Ghats'],
+    estimated_daily_cost: 2400,
+    best_time_to_visit: 'October – March',
+    latitude: 25.3176,
+    longitude: 82.9739,
     rating: 4.8
   },
   {
-    name: 'Swiss Alpine Majesty',
-    country: 'Switzerland',
-    city: 'Interlaken & Zermatt',
-    region: 'Europe',
-    description: 'Snow-capped peaks, crystal clear alpine lakes, scenic train rides, and exhilarating mountain outdoor adventures.',
-    image_url: 'https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?auto=format&fit=crop&w=1200&q=80',
-    popular_attractions: ['Matterhorn', 'Jungfraujoch Top of Europe', 'Lake Geneva', 'Gornergrat Railway', 'Lauterbrunnen Valley'],
-    recommended_activities: ['Glacier Express Scenic Train Ride', 'Paragliding over Interlaken', 'Swiss Fondue & Chocolate Tasting Tour', 'Hiking the Eiger Trail', 'Cable Car to Matterhorn Glacier Paradise'],
-    estimated_daily_cost: 230,
-    best_time_to_visit: 'June – August (Hiking) or December – March (Skiing)',
-    latitude: 46.6863,
-    longitude: 7.8632,
-    rating: 4.9
-  },
-  {
-    name: 'New York City Lights',
-    country: 'United States',
-    city: 'New York',
-    region: 'North America',
-    description: 'The energetic global metropolis of soaring skyscrapers, iconic Broadway theater, vibrant diverse neighborhoods, and world-class dining.',
-    image_url: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&w=1200&q=80',
-    popular_attractions: ['Central Park', 'Times Square', 'Empire State Building', 'Statue of Liberty', 'The High Line & Hudson Yards'],
-    recommended_activities: ['Broadway Musical Evening Show', 'Helicopter Flight over Manhattan', 'Brooklyn Bridge Walking & Pizza Tour', 'The MET & MoMA Art Galleries', 'Top of the Rock Sunset Observation'],
-    estimated_daily_cost: 220,
-    best_time_to_visit: 'September – November & April – June',
-    latitude: 40.7128,
-    longitude: -74.0060,
-    rating: 4.7
-  },
-  {
-    name: 'Barcelona Coastal Artistry',
-    country: 'Spain',
-    city: 'Barcelona',
-    region: 'Europe',
-    description: 'Gothic quarters, Mediterranean beaches, Gaudí’s surreal architectural masterpieces, and lively tapas bars.',
-    image_url: 'https://images.unsplash.com/photo-1583422409516-2895a77efded?auto=format&fit=crop&w=1200&q=80',
-    popular_attractions: ['Basílica de la Sagrada Família', 'Park Güell', 'Casa Batlló', 'Gothic Quarter (Barri Gòtic)', 'La Barceloneta Beach'],
-    recommended_activities: ['Gaudí Architectural Masterpieces Tour', 'Tapas & Sangria Evening Walk in El Born', 'Sunset Sailing Cruise along the Coast', 'Flamenco Show in Old Town', 'Mercat de la Boqueria Food Discovery'],
-    estimated_daily_cost: 135,
-    best_time_to_visit: 'May – June & September – October',
-    latitude: 41.3851,
-    longitude: 2.1734,
-    rating: 4.8
-  },
-  {
-    name: 'Cape Town Oceans & Peaks',
-    country: 'South Africa',
-    city: 'Cape Town',
-    region: 'Africa',
-    description: 'Where dramatic mountains meet two oceans, world-class Cape Winelands, penguin colonies, and vibrant cultural heritage.',
-    image_url: 'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&fit=crop&w=1200&q=80',
-    popular_attractions: ['Table Mountain Aerial Cableway', 'Cape of Good Hope', 'Boulders Beach Penguin Colony', 'Kirstenbosch Botanical Gardens', 'V&A Waterfront'],
-    recommended_activities: ['Cable Car to Table Mountain Summit', 'Wine Tasting in Stellenbosch & Franschhoek', 'Boulders Beach Penguin Walk', 'Scenic Drive along Chapman’s Peak', 'Sunset Catamaran Cruise from V&A Waterfront'],
-    estimated_daily_cost: 95,
+    name: 'Goa Golden Shores & Heritage',
+    country: 'India',
+    city: 'Panaji & South Goa',
+    region: 'West India',
+    description: 'India’s ultimate sun-kissed coastal haven featuring golden sandy beaches, Portuguese heritage churches, lively beach shacks, water adventures, and vibrant music.',
+    image_url: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=80',
+    popular_attractions: ['Palolem Beach & Butterfly Beach', 'Basilica of Bom Jesus (UNESCO)', 'Dudhsagar Four-Tiered Waterfall', 'Fort Aguada & Lighthouse', 'Fontainhas Latin Quarter'],
+    recommended_activities: ['Sunset Catamaran & Dolphin Cruise', 'Scuba Diving at Grande Island', 'Fontainhas Portuguese Heritage Walk', 'Spice Plantation Tour with Goan Lunch', 'Beach Shack Candlelight Dinner'],
+    estimated_daily_cost: 3800,
     best_time_to_visit: 'November – March',
-    latitude: -33.9249,
-    longitude: 18.4241,
-    rating: 4.9
-  },
-  {
-    name: 'Santorini Sunset Odyssey',
-    country: 'Greece',
-    city: 'Santorini',
-    region: 'Europe',
-    description: 'Whitewashed cliffside villages, brilliant blue-domed churches, volcanic black sand beaches, and world-famous Aegean sunsets.',
-    image_url: 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=1200&q=80',
-    popular_attractions: ['Oia Village Sunset Point', 'Fira to Oia Caldera Trail', 'Red Beach', 'Ancient Akrotiri', 'Santo Wines Winery'],
-    recommended_activities: ['Caldera Catamaran Cruise with Hot Springs', 'Volcanic Wine Tasting Tour', 'Cliffside Photography Session in Oia', 'Traditional Greek Cooking Class', 'Sea Kayaking along South Coast'],
-    estimated_daily_cost: 210,
-    best_time_to_visit: 'May – October',
-    latitude: 36.3932,
-    longitude: 25.4615,
-    rating: 4.9
-  },
-  {
-    name: 'Sydney Harbour & Beaches',
-    country: 'Australia',
-    city: 'Sydney',
-    region: 'Oceania',
-    description: 'Glittering natural harbours, legendary golden surf beaches, the iconic Opera House, and lush coastal national parks.',
-    image_url: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=1200&q=80',
-    popular_attractions: ['Sydney Opera House', 'Sydney Harbour Bridge', 'Bondi Beach & Coastal Walk', 'Taronga Zoo', 'Manly Ferry & Beach'],
-    recommended_activities: ['Sydney Harbour BridgeClimb', 'Opera House Architectural Tour', 'Bondi to Coogee Coastal Hike', 'Surfing Lesson at Manly Beach', 'Blue Mountains Day Trip & Scenic World'],
-    estimated_daily_cost: 175,
-    best_time_to_visit: 'September – November & March – May',
-    latitude: -33.8688,
-    longitude: 151.2093,
+    latitude: 15.2993,
+    longitude: 74.1240,
     rating: 4.8
   },
   {
-    name: 'Cairo & Pyramids Legacy',
-    country: 'Egypt',
-    city: 'Cairo & Giza',
-    region: 'Africa',
-    description: 'Stand in awe before the Great Pyramids of Giza, the enigmatic Sphinx, timeless Nile river cruises, and treasure-filled museums.',
-    image_url: 'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?auto=format&fit=crop&w=1200&q=80',
-    popular_attractions: ['Great Pyramids of Giza & Sphinx', 'Grand Egyptian Museum', 'Khan el-Khalili Bazaar', 'Saladin Citadel & Mosque', 'Nile River Felucca'],
-    recommended_activities: ['Private Egyptologist Pyramid Tour', 'Sunset Camel Ride around Giza Plateau', 'Traditional Felucca Sailing on the Nile', 'Khan el-Khalili Market Treasure Hunt', 'Coptic & Islamic Cairo Walking Tour'],
-    estimated_daily_cost: 70,
-    best_time_to_visit: 'October – April',
-    latitude: 30.0444,
-    longitude: 31.2357,
-    rating: 4.7
-  },
-  {
-    name: 'Reykjavik & Aurora Borealis',
-    country: 'Iceland',
-    city: 'Reykjavik',
-    region: 'Europe',
-    description: 'The land of fire and ice featuring dancing Northern Lights, geothermal lagoons, roaring waterfalls, and black volcanic beaches.',
-    image_url: 'https://images.unsplash.com/photo-1504893524553-b855bce32c67?auto=format&fit=crop&w=1200&q=80',
-    popular_attractions: ['Blue Lagoon Geothermal Spa', 'Golden Circle (Thingvellir, Geysir, Gullfoss)', 'Reynisfjara Black Sand Beach', 'Hallgrímskirkja Church', 'Jökulsárlón Glacier Lagoon'],
-    recommended_activities: ['Northern Lights Aurora Hunt', 'Glacier Hiking & Ice Cave Exploration', 'Soaking in the Blue Lagoon Thermal Waters', 'Golden Circle Super Jeep Tour', 'Whale Watching in Faxaflói Bay'],
-    estimated_daily_cost: 215,
-    best_time_to_visit: 'September – March (Auroras) or June – August (Midnight Sun)',
-    latitude: 64.1466,
-    longitude: -21.9426,
+    name: 'Agra City of the Taj Mahal',
+    country: 'India',
+    city: 'Agra',
+    region: 'North India',
+    description: 'Home to the immortal Taj Mahal—the world’s ultimate monument of eternal love—surrounded by majestic Mughal citadels, gardens, and royal tombs.',
+    image_url: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=1200&q=80',
+    popular_attractions: ['The Taj Mahal', 'Agra Fort (Red Sandstone Citadel)', 'Fatehpur Sikri Imperial Ruins', 'Mehtab Bagh Moonlight Garden', 'Itmad-ud-Daulah (Baby Taj)'],
+    recommended_activities: ['Sunrise Photography Tour at Taj Mahal', 'Sunset Reflection View from Mehtab Bagh', 'Mughlai Culinary & Petha Sweets Safari', 'Excursion to Fatehpur Sikri Ghost City', 'Marble Inlay Craft Workshop'],
+    estimated_daily_cost: 3200,
+    best_time_to_visit: 'October – March',
+    latitude: 27.1767,
+    longitude: 78.0081,
     rating: 4.9
   },
   {
-    name: 'Bangkok Street Food & Temples',
-    country: 'Thailand',
-    city: 'Bangkok',
-    region: 'Asia',
-    description: 'Gilded Buddhist temples, aromatic sizzling night markets, bustling canals, and world-renowned Thai hospitality.',
-    image_url: 'https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=1200&q=80',
-    popular_attractions: ['The Grand Palace', 'Wat Pho (Reclining Buddha)', 'Wat Arun (Temple of Dawn)', 'Chatuchak Weekend Market', 'Chao Phraya River'],
-    recommended_activities: ['Midnight Tuk-Tuk Street Food Safari', 'Chao Phraya River Longtail Boat Tour', 'Authentic Thai Cooking Class', 'Rooftop Sky Bar Cocktail with Skyline View', 'Day Trip to Ayutthaya Ancient Ruins'],
-    estimated_daily_cost: 65,
-    best_time_to_visit: 'November – February',
-    latitude: 13.7563,
-    longitude: 100.5018,
-    rating: 4.8
-  },
-  {
-    name: 'Machu Picchu Inca Trail',
-    country: 'Peru',
-    city: 'Cusco & Sacred Valley',
-    region: 'Americas',
-    description: 'The mystical Incan citadel perched high in the Andes mountains surrounded by cloud forests and ancient terraces.',
-    image_url: 'https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=1200&q=80',
-    popular_attractions: ['Machu Picchu Sanctuary', 'Sacred Valley of the Incas', 'Cusco Plaza de Armas', 'Ollantaytambo Fortress', 'Rainbow Mountain (Vinicunca)'],
-    recommended_activities: ['Classic Inca Trail Trek to Sun Gate', 'Scenic Vistadome Train to Aguas Calientes', 'Cusco Andean Culinary & Chocolate Tour', 'Rainbow Mountain Day Expedition', 'Salt Mines of Maras Tour'],
-    estimated_daily_cost: 90,
+    name: 'Leh-Ladakh Land of High Passes',
+    country: 'India',
+    city: 'Leh',
+    region: 'Himalayas',
+    description: 'The enchanting high-altitude desert surrounded by soaring snow peaks, sapphire glacial lakes, dramatic mountain passes, and ancient cliffside Buddhist monasteries.',
+    image_url: 'https://images.unsplash.com/photo-1581793745862-99fde7fa73d2?auto=format&fit=crop&w=1200&q=80',
+    popular_attractions: ['Pangong Tso Blue Lake', 'Nubra Valley & Hunder Sand Dunes', 'Khardung La Pass (17,982 ft)', 'Thiksey & Hemis Monasteries', 'Magnetic Hill & Confluence'],
+    recommended_activities: ['Double-Humped Bactrian Camel Ride in Nubra', 'Star-Gazing Camping under Himalayan Skies', 'Rafting on Zanskar River Rapids', 'Riding Motorbike across Khardung La', 'Morning Chants at Thiksey Monastery'],
+    estimated_daily_cost: 4800,
     best_time_to_visit: 'May – September',
-    latitude: -13.1631,
-    longitude: -72.5450,
+    latitude: 34.1526,
+    longitude: 77.5771,
+    rating: 4.9
+  },
+  {
+    name: 'Udaipur Romantic City of Lakes',
+    country: 'India',
+    city: 'Udaipur',
+    region: 'West India',
+    description: 'The romantic City of Lakes and Venice of the East, famed for white marble palaces rising from shimmering waters, royal courtyards, and sunset boat rides.',
+    image_url: 'https://images.unsplash.com/photo-1615836245337-f5b9b2303f10?auto=format&fit=crop&w=1200&q=80',
+    popular_attractions: ['City Palace Complex', 'Lake Pichola & Jag Mandir', 'Saheliyon-ki-Bari Royal Garden', 'Sajjangarh (Monsoon Palace)', 'Bagore Ki Haveli'],
+    recommended_activities: ['Sunset Royal Boat Cruise on Lake Pichola', 'Dharohar Folk Dance Show at Bagore Ki Haveli', 'Heritage Walk through Old Mewar Quarters', 'Rooftop Dining Overlooking Illuminated Palaces', 'Vintage Car Museum Tour'],
+    estimated_daily_cost: 4500,
+    best_time_to_visit: 'October – March',
+    latitude: 24.5854,
+    longitude: 73.7125,
+    rating: 4.9
+  },
+  {
+    name: 'Manali & Solang Alpine Valleys',
+    country: 'India',
+    city: 'Manali',
+    region: 'Himalayas',
+    description: 'Nestled along the Beas River under cedar pine forests and alpine peaks, offering thrilling snow sports, roaring waterfalls, and serene mountain cafes.',
+    image_url: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=1200&q=80',
+    popular_attractions: ['Solang Valley Snow Point', 'Rohtang Pass (13,058 ft)', 'Hadimba Devi Ancient Wooden Temple', 'Jogini Waterfalls', 'Old Manali Apple Orchards'],
+    recommended_activities: ['Paragliding over Solang Valley', 'White Water River Rafting on Beas River', 'Trek to Jogini Waterfall & Vashisht Hot Springs', 'Atal Tunnel Drive to Lahaul Valley', 'Cafe Hopping in Old Manali'],
+    estimated_daily_cost: 3600,
+    best_time_to_visit: 'October – February & March – June',
+    latitude: 32.2396,
+    longitude: 77.1887,
+    rating: 4.8
+  },
+  {
+    name: 'Rishikesh Yoga Capital of the World',
+    country: 'India',
+    city: 'Rishikesh',
+    region: 'North India',
+    description: 'Where the emerald Holy Ganga emerges from the Himalayas, blending adrenaline river rafting, spirituality, cliff jumps, and peaceful riverside ashrams.',
+    image_url: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80',
+    popular_attractions: ['Laxman Jhula & Ram Jhula', 'Triveni Ghat Evening Aarti', 'Beatles Ashram (Chaurasi Kutia)', 'Neer Garh Waterfall', 'Shivpuri River Camps'],
+    recommended_activities: ['White Water River Rafting (Grade III & IV)', 'Bungee Jumping from India’s Highest Platform (83m)', 'Sunset Ganga Aarti at Triveni Ghat', 'Sunrise Yoga & Sound Meditation Session', 'Cliff Jumping & Camping by the River'],
+    estimated_daily_cost: 2800,
+    best_time_to_visit: 'September – November & March – May',
+    latitude: 30.0869,
+    longitude: 78.2676,
+    rating: 4.8
+  },
+  {
+    name: 'Darjeeling Queen of the Hills',
+    country: 'India',
+    city: 'Darjeeling',
+    region: 'East India',
+    description: 'Celebrated for world-famous aromatic muscatel tea gardens, breathtaking sunrise panoramas over Mount Kanchenjunga, and the UNESCO Toy Train.',
+    image_url: 'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=1200&q=80',
+    popular_attractions: ['Tiger Hill Kanchenjunga Sunrise', 'Darjeeling Himalayan Railway (UNESCO Toy Train)', 'Batasia Loop & War Memorial', 'Happy Valley Tea Estate', 'Peace Pagoda & Japanese Temple'],
+    recommended_activities: ['Dawn Sunrise Viewing over Kanchenjunga', 'Heritage Steam Engine Toy Train Ride to Ghoom', 'Tea Plucking & Tasting Workshop', 'Himalayan Mountaineering Institute Visit', 'Strolling through Mall Road & Glenary’s Bakery'],
+    estimated_daily_cost: 3000,
+    best_time_to_visit: 'March – May & October – December',
+    latitude: 27.0410,
+    longitude: 88.2663,
+    rating: 4.8
+  },
+  {
+    name: 'Amritsar Golden Temple & Heritage',
+    country: 'India',
+    city: 'Amritsar',
+    region: 'North India',
+    description: 'The spiritual heart of Punjab, radiating peaceful divine energy at the golden Harmandir Sahib, electrifying patriotic Wagah Border ceremonies, and legendary food.',
+    image_url: 'https://images.unsplash.com/photo-1588096344356-9a572a1532fb?auto=format&fit=crop&w=1200&q=80',
+    popular_attractions: ['Harmandir Sahib (The Golden Temple)', 'Wagah Border Flag Lowering Ceremony', 'Jallianwala Bagh Memorial', 'Partition Museum', 'Gobindgarh Fort'],
+    recommended_activities: ['Holy Dip & Seva Volunteer Service at Golden Temple', 'Tasting Famous Amritsari Kulcha & Lassi', 'Experiencing Wagah Border Retreat Ceremony', 'Night Illuminations at Sarovar (Sacred Pool)', 'Heritage Street Night Stroll'],
+    estimated_daily_cost: 2600,
+    best_time_to_visit: 'October – March',
+    latitude: 31.6340,
+    longitude: 74.8723,
+    rating: 4.9
+  },
+  {
+    name: 'Hampi Ancient Vijayanagara Ruins',
+    country: 'India',
+    city: 'Hampi',
+    region: 'South India',
+    description: 'An awe-inspiring open-air museum and UNESCO World Heritage wonderland of giant granite boulders, ancient 14th-century empire temples, and Tungabhadra riverbanks.',
+    image_url: 'https://images.unsplash.com/photo-1600100397608-f010f444f434?auto=format&fit=crop&w=1200&q=80',
+    popular_attractions: ['Virupaksha Temple', 'Vittala Temple & Iconic Stone Chariot', 'Lotus Mahal & Elephant Stables', 'Matanga Hill Viewpoint', 'Tungabhadra River Coracle Boats'],
+    recommended_activities: ['Sunrise Hike to Matanga Hill Panoramic Summit', 'Traditional Round Coracle Boat Ride on Tungabhadra', 'Cycling through Ancient Vijayanagara Ruins', 'Sunset Chill at Sanapur Lake', 'Rock Climbing & Bouldering Expedition'],
+    estimated_daily_cost: 2500,
+    best_time_to_visit: 'October – March',
+    latitude: 15.3350,
+    longitude: 76.4600,
+    rating: 4.9
+  },
+  {
+    name: 'Mumbai City of Dreams',
+    country: 'India',
+    city: 'Mumbai',
+    region: 'West India',
+    description: 'The dynamic City of Dreams, where grand Victorian Gothic architecture meets the Arabian Sea coast, Bollywood glamour, and pulsating night energy.',
+    image_url: 'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=1200&q=80',
+    popular_attractions: ['Gateway of India', 'Marine Drive (Queen’s Necklace)', 'Chhatrapati Shivaji Maharaj Terminus (UNESCO)', 'Elephanta Island Rock Caves', 'Colaba Causeway & Kala Ghoda Art District'],
+    recommended_activities: ['Evening Sunset Walk along Marine Drive Promenade', 'Ferry Ride to Ancient Elephanta Caves', 'Street Food Crawl: Pav Bhaji, Vada Pav & Bhelpuri', 'Heritage Colonial Architecture Walk', 'Art Gallery Stroll in Kala Ghoda'],
+    estimated_daily_cost: 4200,
+    best_time_to_visit: 'October – March',
+    latitude: 18.9220,
+    longitude: 72.8347,
+    rating: 4.8
+  },
+  {
+    name: 'Meghalaya Living Root Bridges & Waterfalls',
+    country: 'India',
+    city: 'Shillong & Cherrapunji',
+    region: 'East India',
+    description: 'The mystical Abode of Clouds in Northeast India, boasting UNESCO bio-engineered double-decker living root bridges, turquoise crystalline rivers, and roaring monsoon waterfalls.',
+    image_url: 'https://images.unsplash.com/photo-1598463844677-4b95f1e84738?auto=format&fit=crop&w=1200&q=80',
+    popular_attractions: ['Double Decker Living Root Bridge (Nongriat)', 'Nohkalikai Falls (India’s tallest plunge)', 'Dawki Umngot Crystal Clear River', 'Mawlynnong (Asia’s Cleanest Village)', 'Mawsmai Limestone Caves'],
+    recommended_activities: ['Trek Down 3,000 Steps to Living Root Bridges', 'Transparent Boating on Dawki River', 'Spelunking in Ancient Limestone Mawsmai Caves', 'Ziplining across Cherrapunji Valleys', 'Sampling Khasi Smoked Delicacies in Shillong'],
+    estimated_daily_cost: 3600,
+    best_time_to_visit: 'October – April',
+    latitude: 25.5788,
+    longitude: 91.8933,
     rating: 4.9
   }
 ];
@@ -218,9 +218,10 @@ async function seedDatabase() {
   console.log('--- Starting Database Seeding ---');
   const db = await getDb();
 
-  // Clean old data
-  console.log('Cleaning existing database tables...');
+  // Clean old data (purge all bot users, foreign destinations, and old records)
+  console.log('Cleaning existing database tables and purging bot users...');
   await db.exec(`
+    DELETE FROM trip_photos;
     DELETE FROM packing_items;
     DELETE FROM expenses;
     DELETE FROM transportations;
@@ -233,40 +234,26 @@ async function seedDatabase() {
     DELETE FROM users;
   `);
 
-  // 1. Create Users (Admin and Demo User)
-  console.log('Seeding users...');
+  // 1. Create ONLY ONE user: hp835711@gmail.com (No bot users!)
+  console.log('Seeding primary user: hp835711@gmail.com...');
   const salt = await bcrypt.genSalt(10);
-  const adminPasswordHash = await bcrypt.hash('AdminPass123!', salt);
-  const travelerPasswordHash = await bcrypt.hash('TravelPass123!', salt);
+  const passwordHash = await bcrypt.hash('AdminPass123!', salt);
 
-  const adminResult = await db.run(
+  const userResult = await db.run(
     `INSERT INTO users (name, email, password_hash, role, avatar_url, bio)
      VALUES (?, ?, ?, 'admin', ?, ?)`,
     [
-      'Alex Vance (Administrator)',
-      'admin@tripplanner.com',
-      adminPasswordHash,
-      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
-      'System Administrator & Master Travel Planner.'
+      'Harshil Patel',
+      'hp835711@gmail.com',
+      passwordHash,
+      'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80',
+      'Humsafar Explorer & Master Trip Planner. Exploring the rich cultural tapestry and landscapes of Incredible India.'
     ]
   );
-  const adminId = adminResult.lastID;
+  const primaryUserId = userResult.lastID;
 
-  const travelerResult = await db.run(
-    `INSERT INTO users (name, email, password_hash, role, avatar_url, bio)
-     VALUES (?, ?, ?, 'user', ?, ?)`,
-    [
-      'Sarah Jenkins',
-      'traveler@tripplanner.com',
-      travelerPasswordHash,
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80',
-      'Digital nomad, photographer, and world wanderer. Always searching for hidden gems and local cuisines!'
-    ]
-  );
-  const travelerId = travelerResult.lastID;
-
-  // 2. Seed Destinations
-  console.log('Seeding destinations...');
+  // 2. Seed Famous Indian Destinations
+  console.log('Seeding 14 iconic Indian destinations...');
   const destinationMap = {};
   for (const d of SEED_DESTINATIONS) {
     const res = await db.run(
@@ -294,73 +281,74 @@ async function seedDatabase() {
     destinationMap[d.city] = res.lastID;
   }
 
-  // 3. Seed Realistic Trips for Sarah (Demo User)
-  console.log('Seeding trips and itineraries...');
+  // 3. Seed Realistic Indian Trips for hp835711@gmail.com
+  console.log('Seeding trips and itineraries in Indian Rupees (₹)...');
 
-  // Trip 1: Kyoto Japan (Active trip)
-  const kyotoTripRes = await db.run(
+  // ==========================================
+  // TRIP 1: Jaipur, Rajasthan (Active Trip)
+  // ==========================================
+  const jaipurTripRes = await db.run(
     `INSERT INTO trips (
       user_id, destination_id, title, destination_name, start_date, end_date,
       description, travelers_count, estimated_budget, cover_image, status, is_public
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'active', 1)`,
     [
-      travelerId,
-      destinationMap['Kyoto'],
-      'Autumn Temples & Culinary Journey in Kyoto',
-      'Kyoto, Japan',
-      '2026-10-15',
-      '2026-10-20',
-      'A 6-day immersive exploration of Kyoto’s historic shrines, Zen gardens, tea masters, and Kaiseki dining in peak autumn foliage.',
+      primaryUserId,
+      destinationMap['Jaipur'],
+      'Royal Heritage & Forts of Jaipur',
+      'Jaipur, Rajasthan',
+      '2026-10-25',
+      '2026-10-30',
+      'A 6-day royal exploration of Amber Fort, Hawa Mahal, bustling gemstone bazaars, and traditional Rajasthani royal feasts.',
       2,
-      2800,
-      'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1200&q=80'
+      35000,
+      'https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=1200&q=80'
     ]
   );
-  const kyotoTripId = kyotoTripRes.lastID;
+  const jaipurTripId = jaipurTripRes.lastID;
 
-  // Days & Itinerary items for Kyoto
-  const kyotoDays = [
+  // Jaipur Itinerary Days
+  const jaipurDays = [
     {
       day_number: 1,
-      date: '2026-10-15',
-      title: 'Arrival & Gion Lanterns',
-      notes: 'Check-in, evening stroll through traditional tea houses.',
+      date: '2026-10-25',
+      title: 'Arrival & Pink City Sunset',
+      notes: 'Check-in at Haveli, evening stroll through Johari Bazaar.',
       items: [
-        { title: 'Check in at Hoshinoya Kyoto', category: 'Relaxation', start_time: '14:00', end_time: '15:00', location: 'Arashiyama, Kyoto', cost: 0, notes: 'River boat arrival' },
-        { title: 'Nishiki Market Street Food Walk', category: 'Food', start_time: '16:00', end_time: '18:00', location: 'Nakagyo Ward, Kyoto', cost: 45, notes: 'Try octopus skewers & matcha mochi' },
-        { title: 'Gion Evening Geisha District Walk', category: 'Culture', start_time: '19:00', end_time: '21:00', location: 'Gion, Higashiyama', cost: 0, notes: 'Photograph traditional wooden machiya houses' }
+        { title: 'Check in at Alsisar Haveli Heritage Hotel', category: 'Relaxation', start_time: '13:00', end_time: '14:30', location: 'Sansar Chandra Road, Jaipur', cost: 0, notes: 'Welcome marigold garland and masala chai' },
+        { title: 'Hawa Mahal & Johari Bazaar Walk', category: 'Sightseeing', start_time: '15:30', end_time: '18:00', location: 'Badi Choupad, Jaipur', cost: 200, notes: 'Photograph the honeycomb facade and buy block prints' },
+        { title: 'Nahargarh Fort Sunset Viewpoint', category: 'Sightseeing', start_time: '18:30', end_time: '20:30', location: 'Nahargarh Hills', cost: 150, notes: 'Panoramic night skyline view of Jaipur city' }
       ]
     },
     {
       day_number: 2,
-      date: '2026-10-16',
-      title: 'Iconic Shrines & Golden Pavilion',
-      notes: 'Early wake-up to beat the crowds at Fushimi Inari.',
+      date: '2026-10-26',
+      title: 'Mighty Forts & Sheesh Mahal',
+      notes: 'Early trip to Amber Fort to explore mirror palaces and Maota Lake.',
       items: [
-        { title: 'Fushimi Inari Torii Gate Hike', category: 'Sightseeing', start_time: '07:30', end_time: '10:30', location: 'Fushimi Ward, Kyoto', cost: 0, notes: 'Hike to the Yotsutsuji intersection viewpoint' },
-        { title: 'Kinkaku-ji (Golden Pavilion)', category: 'Sightseeing', start_time: '12:00', end_time: '13:30', location: 'Kita Ward, Kyoto', cost: 10, notes: 'Marvel at gold leaf reflection in the mirror pond' },
-        { title: 'Traditional Tea Ceremony Experience', category: 'Culture', start_time: '15:00', end_time: '16:30', location: 'En Tea House, Gion', cost: 55, notes: 'Learn Cha-no-yu etiquette with a tea master' },
-        { title: 'Kaiseki Dinner at Gion Karyo', category: 'Food', start_time: '19:30', end_time: '21:30', location: 'Gion, Kyoto', cost: 180, notes: 'Seasonal multi-course autumn menu' }
+        { title: 'Amer Fort & Sheesh Mahal Tour', category: 'Sightseeing', start_time: '08:30', end_time: '12:00', location: 'Amer, Jaipur', cost: 500, notes: 'Marvel at millions of convex Belgian glass mirrors' },
+        { title: 'Jaigarh Fort & Jaivana Cannon', category: 'Sightseeing', start_time: '12:30', end_time: '14:00', location: 'Cheel ka Teela', cost: 200, notes: 'World largest wheeled cannon' },
+        { title: 'Grand Rajasthani Thali at Chokhi Dhani', category: 'Food', start_time: '19:00', end_time: '22:00', location: 'Tonk Road', cost: 1800, notes: 'Dal baati churma, folk dance and puppet show' }
       ]
     },
     {
       day_number: 3,
-      date: '2026-10-17',
-      title: 'Arashiyama Bamboo & River Boat',
-      notes: 'Explore the western mountains and Zen heritage.',
+      date: '2026-10-27',
+      title: 'City Palace & Astronomical Jantar Mantar',
+      notes: 'Royal courtyards, Peacock Gate, and world’s largest stone sundial.',
       items: [
-        { title: 'Arashiyama Bamboo Grove & Tenryu-ji', category: 'Nature', start_time: '08:30', end_time: '11:00', location: 'Arashiyama, Kyoto', cost: 15, notes: 'Walk through towering emerald stalks' },
-        { title: 'Iwatayama Monkey Park Hike', category: 'Adventure', start_time: '11:30', end_time: '13:00', location: 'Arashiyama', cost: 12, notes: 'Panoramic views over Kyoto valley' },
-        { title: 'Sagano Romantic Scenic Train', category: 'Entertainment', start_time: '14:30', end_time: '16:00', location: 'Torokko Saga Station', cost: 25, notes: 'Autumn foliage along Hozugawa gorge' }
+        { title: 'City Palace Private Courtyards Tour', category: 'Culture', start_time: '09:30', end_time: '12:30', location: 'Old City, Jaipur', cost: 700, notes: 'Pritam Niwas Chowk peacock doors' },
+        { title: 'Jantar Mantar UNESCO Observatory', category: 'Sightseeing', start_time: '14:00', end_time: '15:30', location: 'Gangori Bazaar', cost: 250, notes: 'Vrihat Samrat Yantra giant sundial' },
+        { title: 'Lassiwala Traditional Clay Cup Lassi', category: 'Food', start_time: '16:00', end_time: '17:00', location: 'MI Road', cost: 160, notes: 'Thick malai topped curd lassi' }
       ]
     }
   ];
 
-  for (const day of kyotoDays) {
+  for (const day of jaipurDays) {
     const dayRes = await db.run(
       `INSERT INTO itinerary_days (trip_id, day_number, date, title, notes)
        VALUES (?, ?, ?, ?, ?)`,
-      [kyotoTripId, day.day_number, day.date, day.title, day.notes]
+      [jaipurTripId, day.day_number, day.date, day.title, day.notes]
     );
     const dayId = dayRes.lastID;
 
@@ -371,213 +359,241 @@ async function seedDatabase() {
           day_id, trip_id, title, category, start_time, end_time,
           location, estimated_cost, notes, order_index
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        [dayId, kyotoTripId, item.title, item.category, item.start_time, item.end_time, item.location, item.cost, item.notes, idx++]
+        [dayId, jaipurTripId, item.title, item.category, item.start_time, item.end_time, item.location, item.cost, item.notes, idx++]
       );
     }
   }
 
-  // Activities for Kyoto Trip
+  // Jaipur Activities
   await db.run(
     `INSERT INTO activities (trip_id, name, category, location, date, start_time, end_time, cost, booking_ref, notes, status)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [kyotoTripId, 'Private Tea Master Ceremony', 'Culture', 'Gion Historic District', '2026-10-16', '15:00', '16:30', 55, 'TEA-KYO-8821', 'Confirmed reservation with Master Tanaka', 'booked']
+    [jaipurTripId, 'Hot Air Balloon Ride over Amber Fort', 'Adventure', 'Amer Valley', '2026-10-27', '06:00', '08:00', 9500, 'SKY-JAI-4412', 'SkyWaltz balloon safari confirmed', 'booked']
   );
   await db.run(
     `INSERT INTO activities (trip_id, name, category, location, date, start_time, end_time, cost, booking_ref, notes, status)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [kyotoTripId, 'Sagano Scenic River Train', 'Entertainment', 'Torokko Station', '2026-10-17', '14:30', '16:00', 25, 'TRAIN-SAG-441', 'Car 5 open air view', 'booked']
-  );
-  await db.run(
-    `INSERT INTO activities (trip_id, name, category, location, date, start_time, end_time, cost, booking_ref, notes, status)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [kyotoTripId, 'Kimono Silk Dyeing Workshop', 'Culture', 'Yuzen Studio Kyoto', '2026-10-18', '10:00', '12:00', 65, '', 'Hands-on traditional stencil craft', 'planned']
+    [jaipurTripId, 'Bagru Block Printing Hands-on Workshop', 'Culture', 'Bagru Artisans Village', '2026-10-28', '11:00', '13:30', 1200, 'BAGRU-882', 'Create personalized cotton scarf', 'planned']
   );
 
-  // Accommodations for Kyoto Trip
+  // Jaipur Accommodations
   await db.run(
     `INSERT INTO accommodations (trip_id, name, type, location, check_in, check_out, nights, price_per_night, total_cost, booking_ref, notes)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [kyotoTripId, 'Hoshinoya Kyoto Luxury Ryokan', 'Resort', 'Arashiyama, Kyoto', '2026-10-15', '2026-10-20', 5, 220, 1100, 'HOSHI-8891-JP', 'Includes daily gourmet Japanese breakfast and boat transfer']
+    [jaipurTripId, 'Alsisar Haveli Heritage Mansion', 'Hotel', 'Sansar Chandra Road, Jaipur', '2026-10-25', '2026-10-30', 5, 4200, 21000, 'ALSISAR-JAI-991', 'Heritage suite with courtyard pool and breakfast']
   );
 
-  // Transportation for Kyoto Trip
+  // Jaipur Transportation
   await db.run(
     `INSERT INTO transportations (trip_id, type, provider, origin, destination, departure_time, arrival_time, cost, booking_ref, notes)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [kyotoTripId, 'Flight', 'Japan Airlines', 'SFO (San Francisco)', 'KIX (Kansai Osaka)', '2026-10-14 11:30', '2026-10-15 15:20', 780, 'JAL-9921-X', 'Flight JL001 Terminal 2']
-  );
-  await db.run(
-    `INSERT INTO transportations (trip_id, type, provider, origin, destination, departure_time, arrival_time, cost, booking_ref, notes)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [kyotoTripId, 'Train', 'JR Haruka Express', 'KIX Airport', 'Kyoto Station', '2026-10-15 16:30', '2026-10-15 17:45', 30, 'JR-PASS-554', 'Reserved Green Car seating']
+    [jaipurTripId, 'Flight', 'IndiGo Airlines', 'BOM (Mumbai T2)', 'JAI (Jaipur T2)', '2026-10-25 09:30', '2026-10-25 11:15', 7200, '6E-481-JAI', 'Roundtrip booked']
   );
 
-  // Expenses for Kyoto Trip
-  const kyotoExpenses = [
-    { category: 'Transportation', title: 'Roundtrip Flights (SFO - KIX)', amount: 780, date: '2026-09-01', payment_method: 'Credit Card', notes: 'Booked via airline website' },
-    { category: 'Accommodation', title: 'Hoshinoya Ryokan 50% Deposit', amount: 550, date: '2026-09-10', payment_method: 'Credit Card', notes: 'Advance booking confirmation' },
-    { category: 'Activities', title: 'Tea Ceremony & Train Tickets', amount: 80, date: '2026-09-20', payment_method: 'Credit Card', notes: 'Pre-paid activity vouchers' },
-    { category: 'Food', title: 'Welcome Wagyu & Sake Dinner', amount: 120, date: '2026-10-15', payment_method: 'Cash', notes: 'Dinner in Pontocho Alley' },
-    { category: 'Shopping', title: 'Handcrafted Ceramic Matcha Bowl', amount: 65, date: '2026-10-16', payment_method: 'Credit Card', notes: 'Kiyomizu pottery shop' }
+  // Jaipur Expenses (in ₹ INR)
+  const jaipurExpenses = [
+    { category: 'Transportation', title: 'Roundtrip IndiGo Flights (BOM – JAI)', amount: 7200, date: '2026-10-01', payment_method: 'UPI / GPay', notes: 'IndiGo booking ref 6E-481' },
+    { category: 'Accommodation', title: 'Alsisar Haveli 50% Advance Booking', amount: 10500, date: '2026-10-05', payment_method: 'Credit Card', notes: 'Heritage suite deposit' },
+    { category: 'Activities', title: 'Amber Fort Elephant & Guide Ticket', amount: 1200, date: '2026-10-26', payment_method: 'Cash', notes: 'Government authorized guide' },
+    { category: 'Food', title: 'Chokhi Dhani Royal Dinner Buffet', amount: 1800, date: '2026-10-26', payment_method: 'UPI', notes: 'Traditional feast with sweets' }
   ];
 
-  for (const exp of kyotoExpenses) {
+  for (const exp of jaipurExpenses) {
     await db.run(
       `INSERT INTO expenses (trip_id, category, title, amount, date, payment_method, notes)
        VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [kyotoTripId, exp.category, exp.title, exp.amount, exp.date, exp.payment_method, exp.notes]
+      [jaipurTripId, exp.category, exp.title, exp.amount, exp.date, exp.payment_method, exp.notes]
     );
   }
 
-  // Packing list items for Kyoto
-  const kyotoPacking = [
-    { name: 'Passport & Rail Pass vouchers', category: 'Documents', packed: 1 },
-    { name: 'Comfortable walking shoes for shrines', category: 'Clothing', packed: 1 },
-    { name: 'Universal power plug adapter', category: 'Electronics', packed: 1 },
-    { name: 'Light autumn jacket / layer', category: 'Clothing', packed: 0 },
-    { name: 'Pocket Wi-Fi / eSIM activated', category: 'Electronics', packed: 0 }
+  // Jaipur Packing list
+  const jaipurPacking = [
+    { name: 'Aadhaar / ID Card for monument entries', category: 'Documents', packed: 1 },
+    { name: 'Breathable cotton kurta and comfortable walking footwear', category: 'Clothing', packed: 1 },
+    { name: 'Sun hat & sunglasses for fort courtyards', category: 'Clothing', packed: 1 },
+    { name: 'Camera with extra SD card & portable power bank', category: 'Electronics', packed: 1 },
+    { name: 'Reusable water bottle & ORS sachets', category: 'General', packed: 0 }
   ];
 
-  for (const p of kyotoPacking) {
+  for (const p of jaipurPacking) {
     await db.run(
       `INSERT INTO packing_items (trip_id, item_name, category, is_packed)
        VALUES (?, ?, ?, ?)`,
-      [kyotoTripId, p.name, p.category, p.packed]
+      [jaipurTripId, p.name, p.category, p.packed]
     );
   }
 
-  // Trip 2: Rome Ancient History (Planning trip)
-  const romeTripRes = await db.run(
-    `INSERT INTO trips (
-      user_id, destination_id, title, destination_name, start_date, end_date,
-      description, travelers_count, estimated_budget, cover_image, status, is_public
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'planning', 1)`,
-    [
-      travelerId,
-      destinationMap['Rome'],
-      'Grand Architecture & Gastronomy of Rome',
-      'Rome, Italy',
-      '2026-11-05',
-      '2026-11-10',
-      'Exploring the Colosseum, Vatican masterpieces, hidden piazzas, and savoring the best cacio e pepe and carbonara in Rome.',
-      2,
-      2400,
-      'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=1200&q=80'
-    ]
-  );
-  const romeTripId = romeTripRes.lastID;
-
-  // Rome Days
-  const romeDays = [
-    {
-      day_number: 1,
-      date: '2026-11-05',
-      title: 'Welcome to Ancient Rome',
-      notes: 'Colosseum and Roman Forum exploration.',
-      items: [
-        { title: 'Check in at Hotel Raphael Relais', category: 'Relaxation', start_time: '13:00', end_time: '14:00', location: 'Piazza Navona, Rome', cost: 0, notes: 'Near Piazza Navona' },
-        { title: 'Colosseum & Roman Forum VIP Tour', category: 'Sightseeing', start_time: '15:00', end_time: '18:00', location: 'Piazza del Colosseo', cost: 75, notes: 'Gladiator arena floor access' },
-        { title: 'Dinner at Da Enzo al 29', category: 'Food', start_time: '20:00', end_time: '22:00', location: 'Trastevere, Rome', cost: 60, notes: 'Authentic Roman carbonara' }
-      ]
-    },
-    {
-      day_number: 2,
-      date: '2026-11-06',
-      title: 'Vatican Art Treasures',
-      notes: 'Early entrance to Sistine Chapel.',
-      items: [
-        { title: 'Vatican Museums & Sistine Chapel Tour', category: 'Culture', start_time: '08:00', end_time: '12:00', location: 'Vatican City', cost: 85, notes: 'Skip the line early access' },
-        { title: 'Lunch at Bonci Pizzarium', category: 'Food', start_time: '12:30', end_time: '13:30', location: 'Prati, Rome', cost: 25, notes: 'Crispy Roman pizza al taglio' },
-        { title: 'Sunset at Trevi Fountain & Pantheon', category: 'Sightseeing', start_time: '17:00', end_time: '19:00', location: 'Piazza di Trevi', cost: 0, notes: 'Toss coin into Trevi Fountain' }
-      ]
-    }
-  ];
-
-  for (const day of romeDays) {
-    const dayRes = await db.run(
-      `INSERT INTO itinerary_days (trip_id, day_number, date, title, notes)
-       VALUES (?, ?, ?, ?, ?)`,
-      [romeTripId, day.day_number, day.date, day.title, day.notes]
-    );
-    const dayId = dayRes.lastID;
-
-    let idx = 0;
-    for (const item of day.items) {
-      await db.run(
-        `INSERT INTO itinerary_items (
-          day_id, trip_id, title, category, start_time, end_time,
-          location, estimated_cost, notes, order_index
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        [dayId, romeTripId, item.title, item.category, item.start_time, item.end_time, item.location, item.cost, item.notes, idx++]
-      );
-    }
-  }
-
-  // Rome Accommodation & Transport
-  await db.run(
-    `INSERT INTO accommodations (trip_id, name, type, location, check_in, check_out, nights, price_per_night, total_cost, booking_ref, notes)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [romeTripId, 'Hotel Raphael Relais & Châteaux', 'Hotel', 'Largo Febo, Rome', '2026-11-05', '2026-11-10', 5, 180, 900, 'RAPH-ROM-772', 'Rooftop terrace with panoramic view']
-  );
-
-  await db.run(
-    `INSERT INTO transportations (trip_id, type, provider, origin, destination, departure_time, arrival_time, cost, booking_ref, notes)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [romeTripId, 'Flight', 'ITA Airways', 'JFK New York', 'FCO Rome Fiumicino', '2026-11-04 18:00', '2026-11-05 08:30', 650, 'AZ-610-CONF', 'Direct flight']
-  );
-
-  await db.run(
-    `INSERT INTO expenses (trip_id, category, title, amount, date, payment_method, notes)
-     VALUES (?, ?, ?, ?, ?, ?, ?)`,
-    [romeTripId, 'Transportation', 'Flight Tickets Deposit', 650, '2026-09-15', 'Credit Card', 'ITA Airways booking']
-  );
-  await db.run(
-    `INSERT INTO expenses (trip_id, category, title, amount, date, payment_method, notes)
-     VALUES (?, ?, ?, ?, ?, ?, ?)`,
-    [romeTripId, 'Activities', 'Vatican & Colosseum VIP Passes', 160, '2026-09-22', 'Credit Card', 'Authorized agency passes']
-  );
-
-  // Trip 3: Bali Tropical Paradise (Completed trip)
-  const baliTripRes = await db.run(
+  // ==========================================
+  // TRIP 2: Kerala Backwaters (COMPLETED TRIP)
+  // Has famous user photos attached!
+  // ==========================================
+  const keralaTripRes = await db.run(
     `INSERT INTO trips (
       user_id, destination_id, title, destination_name, start_date, end_date,
       description, travelers_count, estimated_budget, cover_image, status, is_public
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', 1)`,
     [
-      travelerId,
-      destinationMap['Ubud & Seminyak'],
-      'Bali Sacred Temples & Island Serenity',
-      'Bali, Indonesia',
-      '2026-06-10',
-      '2026-06-18',
-      'A revitalizing 8-day tropical retreat through Ubud’s sacred jungles and Seminyak’s beach clubs.',
+      primaryUserId,
+      destinationMap['Alleppey & Munnar'],
+      'Kerala Serene Backwaters & Tea Gardens',
+      'Alleppey & Munnar, Kerala',
+      '2026-09-10',
+      '2026-09-17',
+      'An unforgettable 7-day journey across Alleppey’s emerald canals on a private houseboat and walking through misty tea estates in Munnar.',
       2,
-      1800,
-      'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1200&q=80'
+      45000,
+      'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=80'
     ]
   );
-  const baliTripId = baliTripRes.lastID;
+  const keralaTripId = keralaTripRes.lastID;
+
+  // Kerala Days
+  const keralaDays = [
+    {
+      day_number: 1,
+      date: '2026-09-10',
+      title: 'Boarding Luxury Houseboat in Alleppey',
+      notes: 'Cruising Vembanad Lake, authentic Karimeen fish curry lunch.',
+      items: [
+        { title: 'Check in at Spice Coast Luxury Kettuvallam', category: 'Relaxation', start_time: '12:00', end_time: '13:00', location: 'Finishing Point, Alleppey', cost: 0, notes: 'Private single bedroom air-conditioned houseboat' },
+        { title: 'Backwater Canal Cruise & Village Life', category: 'Nature', start_time: '14:00', end_time: '17:30', location: 'Kuttanad Canals', cost: 0, notes: 'Paddy fields below sea level' },
+        { title: 'Sunset Fishing & Coconut Water by the Lagoon', category: 'Relaxation', start_time: '18:00', end_time: '19:30', location: 'Vembanad Lake', cost: 150, notes: 'Fresh tender coconuts' }
+      ]
+    },
+    {
+      day_number: 2,
+      date: '2026-09-11',
+      title: 'Munnar Misty Hills & Tea Museum',
+      notes: 'Scenic drive to Western Ghats with stops at Valara and Cheeyappara waterfalls.',
+      items: [
+        { title: 'Drive to Munnar & Cheeyappara Falls', category: 'Sightseeing', start_time: '09:00', end_time: '12:30', location: 'NH 85, Munnar Road', cost: 0, notes: 'Spectacular seven-tiered cascade' },
+        { title: 'KDHP Tea Museum & Factory Experience', category: 'Culture', start_time: '14:30', end_time: '16:30', location: 'Nullatanni, Munnar', cost: 400, notes: 'CTC tea processing and tasting session' }
+      ]
+    }
+  ];
+
+  for (const day of keralaDays) {
+    const dayRes = await db.run(
+      `INSERT INTO itinerary_days (trip_id, day_number, date, title, notes)
+       VALUES (?, ?, ?, ?, ?)`,
+      [keralaTripId, day.day_number, day.date, day.title, day.notes]
+    );
+    const dayId = dayRes.lastID;
+
+    let idx = 0;
+    for (const item of day.items) {
+      await db.run(
+        `INSERT INTO itinerary_items (
+          day_id, trip_id, title, category, start_time, end_time,
+          location, estimated_cost, notes, order_index
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [dayId, keralaTripId, item.title, item.category, item.start_time, item.end_time, item.location, item.cost, item.notes, idx++]
+      );
+    }
+  }
+
+  // Kerala Expenses
+  const keralaExpenses = [
+    { category: 'Accommodation', title: 'Spice Coast Houseboat (2 Nights)', amount: 16000, date: '2026-09-10', payment_method: 'UPI', notes: 'Full board meals included' },
+    { category: 'Accommodation', title: 'Tea County Resort Munnar (3 Nights)', amount: 14500, date: '2026-09-12', payment_method: 'Credit Card', notes: 'Valley view cottage' },
+    { category: 'Transportation', title: 'Private Innova Chauffeur Car (7 Days)', amount: 12000, date: '2026-09-10', payment_method: 'Cash', notes: 'Kochi - Alleppey - Munnar - Kochi' },
+    { category: 'Activities', title: 'Ayurvedic Abhyanga Spa & Kathakali Show', amount: 3200, date: '2026-09-13', payment_method: 'UPI', notes: 'Authentic herbal oil massage' }
+  ];
+
+  for (const exp of keralaExpenses) {
+    await db.run(
+      `INSERT INTO expenses (trip_id, category, title, amount, date, payment_method, notes)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [keralaTripId, exp.category, exp.title, exp.amount, exp.date, exp.payment_method, exp.notes]
+    );
+  }
+
+  // 4. Seed Famous Trip Photos for Completed Kerala Trip!
+  console.log('Seeding famous trip photos for completed Kerala trip...');
+  const famousPhotos = [
+    {
+      title: 'Dawn Reflections on Vembanad Lake',
+      photo_url: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=80',
+      caption: 'Waking up at 5:45 AM on our wooden houseboat with stillness on the water and fishermen casting their morning nets. Pure heaven in God’s Own Country.',
+      location: 'Alleppey Backwaters, Kerala',
+      taken_date: '2026-09-11',
+      likes_count: 42
+    },
+    {
+      title: 'Endless Emerald Slopes of Munnar Tea Plantations',
+      photo_url: 'https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=1200&q=80',
+      caption: 'The morning mist rolling through the hills at 6,000 feet. The aroma of fresh tea leaves and eucalyptus was in the air as the sun broke through.',
+      location: 'Kolukkumalai Tea Estate, Munnar',
+      taken_date: '2026-09-13',
+      likes_count: 58
+    },
+    {
+      title: 'Dramatic Kathakali Face Art & Expression',
+      photo_url: 'https://images.unsplash.com/photo-1609137144813-7d9921338f24?auto=format&fit=crop&w=1200&q=80',
+      caption: 'Fascinating 90-minute live makeup transformation of the Chuvanna Thadi character before the epic Mahabharata dance theater.',
+      location: 'Kalaripayattu & Kathakali Center, Munnar',
+      taken_date: '2026-09-14',
+      likes_count: 36
+    },
+    {
+      title: 'Golden Sunset at Marari Palm Coast',
+      photo_url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
+      caption: 'Final evening dipping our toes in the warm Arabian Sea waters under swaying coconut palms as the sky turned fiery crimson.',
+      location: 'Marari Beach, Alappuzha',
+      taken_date: '2026-09-16',
+      likes_count: 64
+    }
+  ];
+
+  for (const fp of famousPhotos) {
+    await db.run(
+      `INSERT INTO trip_photos (trip_id, user_id, photo_url, title, caption, location, taken_date, likes_count)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [keralaTripId, primaryUserId, fp.photo_url, fp.title, fp.caption, fp.location, fp.taken_date, fp.likes_count]
+    );
+  }
+
+  // ==========================================
+  // TRIP 3: Varanasi (Planning Trip)
+  // ==========================================
+  const varanasiTripRes = await db.run(
+    `INSERT INTO trips (
+      user_id, destination_id, title, destination_name, start_date, end_date,
+      description, travelers_count, estimated_budget, cover_image, status, is_public
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'planning', 1)`,
+    [
+      primaryUserId,
+      destinationMap['Varanasi'],
+      'Spiritual Awakening & Holy Ghats of Varanasi',
+      'Varanasi, Uttar Pradesh',
+      '2026-11-12',
+      '2026-11-16',
+      'Immersing in ancient spirituality, evening Ganga Aarti, sunrise boat rituals on Dashashwamedh Ghat, and Sarnath relics.',
+      2,
+      22000,
+      'https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=1200&q=80'
+    ]
+  );
+  const varanasiTripId = varanasiTripRes.lastID;
 
   await db.run(
     `INSERT INTO expenses (trip_id, category, title, amount, date, payment_method, notes)
      VALUES (?, ?, ?, ?, ?, ?, ?)`,
-    [baliTripId, 'Accommodation', 'Kamandalu Ubud Resort 8 Nights', 720, '2026-06-10', 'Credit Card', 'Pool villa booking']
+    [varanasiTripId, 'Accommodation', 'BrijRama Palace Heritage Deposit', 6500, '2026-10-18', 'UPI', 'Heritage palace directly on Darbhanga Ghat']
   );
   await db.run(
     `INSERT INTO expenses (trip_id, category, title, amount, date, payment_method, notes)
      VALUES (?, ?, ?, ?, ?, ?, ?)`,
-    [baliTripId, 'Transportation', 'Flight to Denpasar (DPS)', 540, '2026-05-20', 'Credit Card', 'Qatar Airways']
-  );
-  await db.run(
-    `INSERT INTO expenses (trip_id, category, title, amount, date, payment_method, notes)
-     VALUES (?, ?, ?, ?, ?, ?, ?)`,
-    [baliTripId, 'Activities', 'Mount Batur Sunrise Trekking & Spa', 120, '2026-06-13', 'Cash', 'Private mountain guide']
+    [varanasiTripId, 'Transportation', 'Vande Bharat Express Train Tickets (Del - Bsb)', 3800, '2026-10-15', 'IRCTC', 'Executive Chair Car 2 seats']
   );
 
   console.log('--- Database Seeding Completed Successfully! ---');
-  console.log('Demo Credentials:');
-  console.log('  Admin:    admin@tripplanner.com   / AdminPass123!');
-  console.log('  Traveler: traveler@tripplanner.com / TravelPass123!');
+  console.log('Active User:');
+  console.log('  Email:    hp835711@gmail.com');
+  console.log('  Password: AdminPass123!');
+  console.log('  All Bot Users Deleted.');
+  console.log('  14 Indian Famous Destinations Loaded in Indian Rupee (₹).');
+  console.log('  Completed Kerala Trip includes famous photos feature demonstration!');
 }
 
 if (require.main === module) {

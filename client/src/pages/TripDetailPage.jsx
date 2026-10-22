@@ -1,16 +1,55 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import {
-  Calendar, MapPin, Users, DollarSign, Clock, Plus, Trash2, Edit3,
+  Calendar, MapPin, Users, IndianRupee, Clock, Plus, Trash2, Edit3,
   Copy, ArrowLeft, CheckCircle2, AlertCircle, Compass, Sparkles,
   Plane, Hotel, Coffee, Camera, ShoppingBag, Eye, Printer, ChevronUp, ChevronDown,
-  FileText, CheckSquare, Square, Share2, Layers, Tag, Phone
+  FileText, CheckSquare, Square, Share2, Layers, Tag, Phone, Heart, Image as ImageIcon, X
 } from 'lucide-react';
 import api from '../services/api';
 import InteractiveMap from '../components/InteractiveMap';
 import BudgetChart from '../components/BudgetChart';
 import Modal from '../components/Modal';
 import { useToast } from '../context/ToastContext';
+
+const FAMOUS_PHOTO_PRESETS = [
+  {
+    title: 'Hawa Mahal Palace of Winds',
+    location: 'Jaipur, Rajasthan',
+    photo_url: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=1200&q=80',
+    caption: 'Intricate 953 honeycombed casements glowing under the pink city sun.'
+  },
+  {
+    title: 'Sunrise at Taj Mahal',
+    location: 'Agra, Uttar Pradesh',
+    photo_url: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=1200&q=80',
+    caption: 'Majestic ivory-white marble mausoleum glistening under golden morning dawn.'
+  },
+  {
+    title: 'Alleppey Backwaters Houseboat',
+    location: 'Alappuzha, Kerala',
+    photo_url: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=80',
+    caption: 'Cruising through lush palm-fringed canals on a traditional Kerala kettuvallam.'
+  },
+  {
+    title: 'Ganga Aarti on Dashashwamedh Ghat',
+    location: 'Varanasi, Uttar Pradesh',
+    photo_url: 'https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=1200&q=80',
+    caption: 'Spiritual evening brass lamps swirling to Vedic chants across the holy river.'
+  },
+  {
+    title: 'Golden Temple Amrit Sarovar',
+    location: 'Amritsar, Punjab',
+    photo_url: 'https://images.unsplash.com/photo-1588096344356-9a4057861e69?auto=format&fit=crop&w=1200&q=80',
+    caption: 'Peaceful golden reflection shimmering on the sacred pool at twilight.'
+  },
+  {
+    title: 'Pangong Tso Crystal Blue Lake',
+    location: 'Ladakh, Jammu & Kashmir',
+    photo_url: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=1200&q=80',
+    caption: 'Breathtaking high-altitude saline lake shifting shades of turquoise against rugged peaks.'
+  }
+];
 
 const CATEGORY_ICONS = {
   Sightseeing: Camera,
@@ -61,6 +100,19 @@ export default function TripDetailPage() {
   const [expenseModalOpen, setExpenseModalOpen] = useState(false);
   const [deleteConfirmModal, setDeleteConfirmModal] = useState(null);
 
+  // Famous Photos State
+  const [photos, setPhotos] = useState([]);
+  const [photoModalOpen, setPhotoModalOpen] = useState(false);
+  const [photoSubmitting, setPhotoSubmitting] = useState(false);
+  const [viewingPhoto, setViewingPhoto] = useState(null);
+  const [photoForm, setPhotoForm] = useState({
+    photo_url: '',
+    title: '',
+    caption: '',
+    location: '',
+    taken_date: new Date().toISOString().split('T')[0]
+  });
+
   // Form States
   const [dayForm, setDayForm] = useState({ title: '', date: '', notes: '' });
   const [itemForm, setItemForm] = useState({
@@ -93,6 +145,7 @@ export default function TripDetailPage() {
     try {
       const res = await api.getTripById(id);
       setTrip(res.trip);
+      setPhotos(res.trip?.photos || []);
       if (res.trip?.itinerary && res.trip.itinerary.length > 0) {
         if (!selectedDayId) {
           setSelectedDayId(res.trip.itinerary[0].id);
@@ -104,6 +157,56 @@ export default function TripDetailPage() {
       navigate('/dashboard');
     } finally {
       setLoading(false);
+    }
+  }
+
+  // --- Photo Handlers ---
+  async function handleAddPhoto(e) {
+    if (e) e.preventDefault();
+    if (!photoForm.photo_url) {
+      error('Please select a preset photo or enter an image URL.');
+      return;
+    }
+    setPhotoSubmitting(true);
+    try {
+      const res = await api.addTripPhoto(id, photoForm);
+      setPhotos(prev => [res.photo, ...prev]);
+      success('Famous photo added to trip memories!');
+      setPhotoModalOpen(false);
+      setPhotoForm({
+        photo_url: '',
+        title: '',
+        caption: '',
+        location: '',
+        taken_date: new Date().toISOString().split('T')[0]
+      });
+    } catch (err) {
+      error(err.message || 'Failed to post photo.');
+    } finally {
+      setPhotoSubmitting(false);
+    }
+  }
+
+  async function handleDeletePhoto(photoId) {
+    try {
+      await api.deleteTripPhoto(id, photoId);
+      setPhotos(prev => prev.filter(p => p.id !== photoId));
+      if (viewingPhoto?.id === photoId) setViewingPhoto(null);
+      success('Photo removed from memories.');
+    } catch (err) {
+      error(err.message || 'Failed to remove photo.');
+    }
+  }
+
+  async function handleLikePhoto(photoId) {
+    try {
+      const res = await api.likeTripPhoto(id, photoId);
+      setPhotos(prev => prev.map(p => p.id === photoId ? { ...p, likes_count: res.likes_count } : p));
+      if (viewingPhoto?.id === photoId) {
+        setViewingPhoto(prev => ({ ...prev, likes_count: res.likes_count }));
+      }
+    } catch (err) {
+      setPhotos(prev => prev.map(p => p.id === photoId ? { ...p, likes_count: (p.likes_count || 0) + 1 } : p));
     }
   }
 
@@ -486,6 +589,63 @@ export default function TripDetailPage() {
         </div>
       </div>
 
+      {/* Completed Trip Celebration & Photo Posting Banner */}
+      {trip.status === 'completed' && (
+        <div style={{
+          background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+          color: '#ffffff',
+          padding: '1rem 1.5rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '1rem',
+          boxShadow: '0 4px 14px rgba(16, 185, 129, 0.25)'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+            <span style={{ fontSize: '1.8rem' }}>🎉</span>
+            <div>
+              <div style={{ fontWeight: 800, fontSize: '1.05rem', fontFamily: 'Outfit' }}>
+                Trip Completed! Share your famous moments & photos
+              </div>
+              <div style={{ fontSize: '0.85rem', opacity: 0.9 }}>
+                You've completed your journey to {trip.destination_name || trip.title}! Add your iconic shots, monument photos, and travel memories.
+              </div>
+            </div>
+          </div>
+          <div style={{ display: 'flex', gap: '0.65rem' }}>
+            <button
+              onClick={() => { setActiveTab('photos'); setPhotoModalOpen(true); }}
+              className="btn"
+              style={{
+                background: '#ffffff',
+                color: '#059669',
+                fontWeight: 700,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+              }}
+              id="btn-post-famous-photo-banner"
+            >
+              <Camera size={18} /> Post Famous Photo
+            </button>
+            <button
+              onClick={() => setActiveTab('photos')}
+              className="btn"
+              style={{
+                background: 'rgba(255,255,255,0.2)',
+                color: '#ffffff',
+                border: '1px solid rgba(255,255,255,0.4)',
+                fontWeight: 600
+              }}
+            >
+              View Memories ({photos.length})
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Main Tab Navigation Bar */}
       <div style={{
         background: '#ffffff',
@@ -497,11 +657,12 @@ export default function TripDetailPage() {
         <div className="container" style={{ display: 'flex', gap: '0.5rem', overflowX: 'auto', padding: '0.5rem 1.5rem' }}>
           {[
             { id: 'overview', label: 'Overview', icon: Eye },
+            { id: 'photos', label: `Famous Photos (${photos.length})`, icon: Camera },
             { id: 'itinerary', label: `Itinerary (${trip.itinerary?.length || 0}d)`, icon: Calendar },
             { id: 'activities', label: `Activities (${trip.activities?.length || 0})`, icon: Sparkles },
             { id: 'accommodations', label: `Stays (${trip.accommodations?.length || 0})`, icon: Hotel },
             { id: 'transportation', label: `Transit (${trip.transportations?.length || 0})`, icon: Plane },
-            { id: 'budget', label: 'Budget & Spend', icon: DollarSign },
+            { id: 'budget', label: 'Budget & Spend', icon: IndianRupee },
             { id: 'map', label: 'Interactive Map', icon: MapPin },
             { id: 'packing', label: 'Packing & Notes', icon: CheckSquare }
           ].map((tab) => {
@@ -553,8 +714,8 @@ export default function TripDetailPage() {
 
               <div className="card" style={{ padding: '1.5rem', background: 'var(--bg-subtle)' }}>
                 <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Planned Budget</div>
-                <div style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'Outfit', margin: '0.25rem 0' }}>${(trip.estimated_budget || 0).toLocaleString()}</div>
-                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>${(trip.budget_summary?.total_spent || 0).toLocaleString()} logged</div>
+                <div style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'Outfit', margin: '0.25rem 0' }}>₹{(trip.estimated_budget || 0).toLocaleString('en-IN')}</div>
+                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>₹{(trip.budget_summary?.total_spent || 0).toLocaleString('en-IN')} logged</div>
               </div>
 
               <div className="card" style={{ padding: '1.5rem', background: 'var(--bg-subtle)' }}>
@@ -578,11 +739,95 @@ export default function TripDetailPage() {
               </div>
             )}
 
+            {/* Famous Photos & Trip Memories Highlight */}
+            <div className="card" style={{ padding: '1.75rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.75rem' }}>
+                <div>
+                  <h3 style={{ fontSize: '1.2rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <Camera size={20} color="var(--primary)" /> Famous Photos & Trip Memories ({photos.length})
+                  </h3>
+                  <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '0.2rem' }}>
+                    {trip.status === 'completed'
+                      ? 'Iconic moments and memories posted from this completed trip.'
+                      : 'Showcase famous landmarks and photography captured during this trip.'}
+                  </p>
+                </div>
+                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                  <button onClick={() => { setActiveTab('photos'); setPhotoModalOpen(true); }} className="btn btn-primary btn-sm" id="btn-add-photo-overview">
+                    <Plus size={15} /> Post Photo
+                  </button>
+                  <button onClick={() => setActiveTab('photos')} className="btn btn-secondary btn-sm" id="btn-view-all-photos-overview">
+                    View Gallery ({photos.length})
+                  </button>
+                </div>
+              </div>
+
+              {photos.length === 0 ? (
+                <div style={{ padding: '2rem 1rem', textAlign: 'center', background: 'var(--bg-subtle)', borderRadius: 'var(--radius-md)' }}>
+                  <Camera size={36} color="var(--text-muted)" style={{ opacity: 0.4, marginBottom: '0.5rem' }} />
+                  <div style={{ fontWeight: 700, fontSize: '0.95rem' }}>No famous photos posted yet</div>
+                  <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '1rem' }}>
+                    {trip.status === 'completed'
+                      ? 'This trip is completed! Celebrate by posting your top landmark photos and memories.'
+                      : 'Add your favorite trip photos and iconic landmark moments!'}
+                  </div>
+                  <button onClick={() => { setActiveTab('photos'); setPhotoModalOpen(true); }} className="btn btn-primary btn-sm">
+                    <Camera size={15} /> Post First Famous Photo
+                  </button>
+                </div>
+              ) : (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '1rem' }}>
+                  {photos.slice(0, 4).map(photo => (
+                    <div
+                      key={photo.id}
+                      onClick={() => setViewingPhoto(photo)}
+                      style={{
+                        position: 'relative',
+                        borderRadius: 'var(--radius-md)',
+                        overflow: 'hidden',
+                        cursor: 'pointer',
+                        aspectRatio: '4/3',
+                        boxShadow: 'var(--shadow-sm)',
+                        transition: 'transform 0.2s ease, box-shadow 0.2s ease'
+                      }}
+                      onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = 'var(--shadow-md)'; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; }}
+                    >
+                      <img
+                        src={photo.photo_url}
+                        alt={photo.title || 'Trip Photo'}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      />
+                      <div style={{
+                        position: 'absolute',
+                        inset: 0,
+                        background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'flex-end',
+                        padding: '0.75rem',
+                        color: '#fff'
+                      }}>
+                        <div style={{ fontWeight: 700, fontSize: '0.85rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                          {photo.title || 'Untitled Moment'}
+                        </div>
+                        {photo.location && (
+                          <div style={{ fontSize: '0.75rem', opacity: 0.9, display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                            <MapPin size={11} /> {photo.location}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
             {/* Budget Gauge Preview */}
             <div className="card" style={{ padding: '1.75rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
                 <h3 style={{ fontSize: '1.2rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <DollarSign size={20} color="var(--primary)" /> Budget Snapshot
+                  <IndianRupee size={20} color="var(--primary)" /> Budget Snapshot
                 </h3>
                 <button onClick={() => setActiveTab('budget')} className="btn btn-secondary btn-sm">
                   View Full Budget
@@ -732,7 +977,7 @@ export default function TripDetailPage() {
                                       )}
                                       <span className="badge badge-secondary">{item.category}</span>
                                       {item.estimated_cost > 0 && (
-                                        <span className="badge badge-success">${item.estimated_cost}</span>
+                                        <span className="badge badge-success">₹{(item.estimated_cost || 0).toLocaleString('en-IN')}</span>
                                       )}
                                     </div>
 
@@ -926,7 +1171,7 @@ export default function TripDetailPage() {
 
                       <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '0.75rem', borderTop: '1px solid var(--border-subtle)' }}>
                         <div style={{ fontWeight: 800, fontSize: '1.15rem', color: '#10b981' }}>
-                          ${(act.cost || 0).toLocaleString()}
+                          ₹{(act.cost || 0).toLocaleString('en-IN')}
                         </div>
                         <div style={{ display: 'flex', gap: '0.35rem' }}>
                           <button
@@ -1035,7 +1280,7 @@ export default function TripDetailPage() {
                         <Calendar size={14} /> Check-in: <strong>{formatDate(acc.check_in)}</strong> → Check-out: <strong>{formatDate(acc.check_out)}</strong>
                       </div>
                       <div style={{ fontSize: '0.8rem', color: 'var(--text-main)', fontWeight: 600 }}>
-                        {acc.nights} {acc.nights > 1 ? 'Nights' : 'Night'} @ ${acc.price_per_night}/night
+                        {acc.nights} {acc.nights > 1 ? 'Nights' : 'Night'} @ ₹{(acc.price_per_night || 0).toLocaleString('en-IN')}/night
                       </div>
                       {acc.booking_ref && (
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: 'var(--primary)', fontWeight: 600 }}>
@@ -1053,7 +1298,7 @@ export default function TripDetailPage() {
                     <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '0.75rem', borderTop: '1px solid var(--border-subtle)' }}>
                       <div>
                         <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Total Stay Cost</div>
-                        <div style={{ fontWeight: 800, fontSize: '1.2rem', color: 'var(--primary)' }}>${(acc.total_cost || 0).toLocaleString()}</div>
+                        <div style={{ fontWeight: 800, fontSize: '1.2rem', color: 'var(--primary)' }}>₹{(acc.total_cost || 0).toLocaleString('en-IN')}</div>
                       </div>
                       <div style={{ display: 'flex', gap: '0.35rem' }}>
                         <button
@@ -1152,7 +1397,7 @@ export default function TripDetailPage() {
                         </div>
                       </div>
                       <div style={{ fontWeight: 800, fontSize: '1.15rem', color: '#0284c7' }}>
-                        ${(tr.cost || 0).toLocaleString()}
+                        ₹{(tr.cost || 0).toLocaleString('en-IN')}
                       </div>
                     </div>
 
@@ -1313,7 +1558,7 @@ export default function TripDetailPage() {
                           </td>
                           <td style={{ padding: '0.85rem 1rem', color: 'var(--text-muted)' }}>{exp.payment_method}</td>
                           <td style={{ padding: '0.85rem 1rem', textAlign: 'right', fontWeight: 700, color: 'var(--primary)' }}>
-                            ${parseFloat(exp.amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                            ₹{parseFloat(exp.amount || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                           </td>
                           <td style={{ padding: '0.85rem 1rem', textAlign: 'center' }}>
                             <button
@@ -1487,6 +1732,302 @@ export default function TripDetailPage() {
           </div>
         )}
 
+        {/* TAB 9: FAMOUS PHOTOS & TRIP MEMORIES */}
+        {activeTab === 'photos' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+            
+            {/* Header with Title, Status & Post Photo Button */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: '1rem',
+              background: 'linear-gradient(135deg, rgba(238, 114, 20, 0.08) 0%, rgba(2, 132, 199, 0.08) 100%)',
+              padding: '1.75rem',
+              borderRadius: 'var(--radius-lg)',
+              border: '1px solid var(--border-color)'
+            }}>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+                  <span className={`badge ${trip.status === 'completed' ? 'badge-success' : 'badge-primary'}`}>
+                    {trip.status === 'completed' ? '🎉 Completed Trip Memories' : '📸 Trip Moments'}
+                  </span>
+                  <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                    {photos.length} {photos.length === 1 ? 'Photo' : 'Photos'} Posted
+                  </span>
+                </div>
+                <h2 style={{ fontSize: '1.75rem', fontWeight: 800, fontFamily: 'Outfit' }}>
+                  Famous Photos & Trip Memories
+                </h2>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', maxWidth: '650px' }}>
+                  Capture, preserve, and showcase iconic sights, monuments, and moments from your travels to {trip.destination_name || trip.title}.
+                </p>
+              </div>
+
+              <div style={{ display: 'flex', gap: '0.75rem' }}>
+                <button
+                  onClick={() => setPhotoModalOpen(true)}
+                  className="btn btn-primary"
+                  style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 1.25rem' }}
+                  id="btn-open-post-photo"
+                >
+                  <Camera size={18} /> Post Famous Photo
+                </button>
+              </div>
+            </div>
+
+            {/* Quick Preset Photo Inspiration Bar */}
+            <div className="card" style={{ padding: '1.25rem 1.5rem', background: 'var(--bg-subtle)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
+                <Sparkles size={16} color="var(--primary)" />
+                <span style={{ fontWeight: 700, fontSize: '0.9rem' }}>Quick Landmark Preset Inspiration</span>
+                <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>(Click any famous shot to prepopulate your memory post)</span>
+              </div>
+              <div style={{ display: 'flex', gap: '0.65rem', overflowX: 'auto', paddingBottom: '0.25rem' }}>
+                {FAMOUS_PHOTO_PRESETS.map((preset, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => {
+                      setPhotoForm({
+                        photo_url: preset.photo_url,
+                        title: preset.title,
+                        caption: preset.caption,
+                        location: preset.location,
+                        taken_date: new Date().toISOString().split('T')[0]
+                      });
+                      setPhotoModalOpen(true);
+                    }}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      padding: '0.45rem 0.75rem',
+                      borderRadius: 'var(--radius-full)',
+                      border: '1px solid var(--border-color)',
+                      background: '#ffffff',
+                      fontSize: '0.82rem',
+                      cursor: 'pointer',
+                      whiteSpace: 'nowrap',
+                      transition: 'var(--transition)'
+                    }}
+                    className="preset-btn"
+                  >
+                    <img
+                      src={preset.photo_url}
+                      alt={preset.title}
+                      style={{ width: '20px', height: '20px', borderRadius: '50%', objectFit: 'cover' }}
+                    />
+                    <span>{preset.title.split(' ')[0]} {preset.title.split(' ')[1] || ''}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Photos Gallery Grid */}
+            {photos.length === 0 ? (
+              <div className="card" style={{ textAlign: 'center', padding: '4rem 2rem' }}>
+                <div style={{
+                  width: '4.5rem',
+                  height: '4.5rem',
+                  borderRadius: '50%',
+                  background: 'var(--primary-light)',
+                  color: 'var(--primary)',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '1.25rem'
+                }}>
+                  <Camera size={34} />
+                </div>
+                <h3 style={{ fontSize: '1.35rem', fontWeight: 800, marginBottom: '0.5rem' }}>
+                  No Famous Photos Added Yet
+                </h3>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem', maxWidth: '450px', margin: '0 auto 1.5rem' }}>
+                  {trip.status === 'completed'
+                    ? "Your journey is complete! Commemorate your adventure by posting your favorite photographs from this trip."
+                    : "Add photos as you explore, or post your best captures once this trip wraps up!"}
+                </p>
+                <button onClick={() => setPhotoModalOpen(true)} className="btn btn-primary" id="btn-post-first-famous-photo">
+                  <Camera size={16} /> Post Your First Famous Photo
+                </button>
+              </div>
+            ) : (
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+                gap: '1.5rem'
+              }}>
+                {photos.map((photo) => (
+                  <div
+                    key={photo.id}
+                    className="card"
+                    style={{
+                      overflow: 'hidden',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      borderRadius: 'var(--radius-lg)',
+                      transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                      border: '1px solid var(--border-color)'
+                    }}
+                  >
+                    {/* Image with Click to Lightbox */}
+                    <div
+                      onClick={() => setViewingPhoto(photo)}
+                      style={{
+                        position: 'relative',
+                        height: '240px',
+                        cursor: 'pointer',
+                        overflow: 'hidden',
+                        background: '#1e293b'
+                      }}
+                    >
+                      <img
+                        src={photo.photo_url}
+                        alt={photo.title || 'Trip memory'}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                          transition: 'transform 0.4s ease'
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.05)'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+                      />
+                      <div style={{
+                        position: 'absolute',
+                        top: '0.75rem',
+                        left: '0.75rem',
+                        display: 'flex',
+                        gap: '0.4rem',
+                        flexWrap: 'wrap'
+                      }}>
+                        {photo.location && (
+                          <span style={{
+                            background: 'rgba(15, 23, 42, 0.75)',
+                            backdropFilter: 'blur(4px)',
+                            color: '#ffffff',
+                            padding: '0.25rem 0.65rem',
+                            borderRadius: 'var(--radius-full)',
+                            fontSize: '0.75rem',
+                            fontWeight: 600,
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.3rem'
+                          }}>
+                            <MapPin size={12} color="#38bdf8" /> {photo.location}
+                          </span>
+                        )}
+                      </div>
+
+                      <div style={{
+                        position: 'absolute',
+                        top: '0.75rem',
+                        right: '0.75rem',
+                        background: 'rgba(15, 23, 42, 0.75)',
+                        backdropFilter: 'blur(4px)',
+                        color: '#ffffff',
+                        padding: '0.25rem 0.55rem',
+                        borderRadius: 'var(--radius-full)',
+                        fontSize: '0.72rem',
+                        fontWeight: 600
+                      }}>
+                        {photo.taken_date ? formatDate(photo.taken_date) : 'Memory'}
+                      </div>
+                    </div>
+
+                    {/* Content Body */}
+                    <div style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                      <h4
+                        onClick={() => setViewingPhoto(photo)}
+                        style={{
+                          fontSize: '1.15rem',
+                          fontWeight: 700,
+                          marginBottom: '0.35rem',
+                          cursor: 'pointer',
+                          color: 'var(--text-main)'
+                        }}
+                      >
+                        {photo.title || 'Iconic Moment'}
+                      </h4>
+
+                      {photo.caption && (
+                        <p style={{
+                          color: 'var(--text-muted)',
+                          fontSize: '0.875rem',
+                          lineHeight: 1.55,
+                          marginBottom: '1rem',
+                          flex: 1
+                        }}>
+                          {photo.caption}
+                        </p>
+                      )}
+
+                      {/* Card Footer: Likes & Actions */}
+                      <div style={{
+                        marginTop: 'auto',
+                        paddingTop: '0.85rem',
+                        borderTop: '1px solid var(--border-subtle)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between'
+                      }}>
+                        <button
+                          type="button"
+                          onClick={() => handleLikePhoto(photo.id)}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.45rem',
+                            border: '1px solid var(--border-color)',
+                            background: 'var(--bg-subtle)',
+                            padding: '0.4rem 0.75rem',
+                            borderRadius: 'var(--radius-full)',
+                            fontSize: '0.82rem',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                            color: photo.likes_count > 0 ? '#ef4444' : 'var(--text-muted)',
+                            transition: 'var(--transition)'
+                          }}
+                          title="Like this photo"
+                          id={`btn-like-photo-${photo.id}`}
+                        >
+                          <Heart size={14} fill={photo.likes_count > 0 ? '#ef4444' : 'none'} color={photo.likes_count > 0 ? '#ef4444' : 'currentColor'} />
+                          <span>{photo.likes_count || 0}</span>
+                        </button>
+
+                        <div style={{ display: 'flex', gap: '0.35rem' }}>
+                          <button
+                            type="button"
+                            onClick={() => setViewingPhoto(photo)}
+                            className="btn btn-secondary btn-sm"
+                            style={{ padding: '0.35rem 0.65rem', fontSize: '0.8rem' }}
+                            title="Expand view"
+                          >
+                            <Eye size={14} /> View
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleDeletePhoto(photo.id)}
+                            className="btn btn-danger btn-sm"
+                            style={{ padding: '0.35rem 0.55rem' }}
+                            title="Delete photo"
+                            id={`btn-delete-photo-${photo.id}`}
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+          </div>
+        )}
+
       </div>
 
       {/* --- ALL MODALS --- */}
@@ -1599,7 +2140,7 @@ export default function TripDetailPage() {
             </div>
 
             <div className="form-group">
-              <label className="form-label">Estimated Cost ($)</label>
+              <label className="form-label">Estimated Cost (₹ INR)</label>
               <input
                 type="number"
                 min="0"
@@ -1728,7 +2269,7 @@ export default function TripDetailPage() {
               />
             </div>
             <div className="form-group">
-              <label className="form-label">Cost ($)</label>
+              <label className="form-label">Cost (₹ INR)</label>
               <input
                 type="number"
                 min="0"
@@ -1857,7 +2398,7 @@ export default function TripDetailPage() {
 
           <div className="form-row">
             <div className="form-group">
-              <label className="form-label">Price per Night ($)</label>
+              <label className="form-label">Price per Night (₹ INR)</label>
               <input
                 type="number"
                 min="0"
@@ -1872,7 +2413,7 @@ export default function TripDetailPage() {
             </div>
 
             <div className="form-group">
-              <label className="form-label">Total Cost ($)</label>
+              <label className="form-label">Total Cost (₹ INR)</label>
               <input
                 type="number"
                 min="0"
@@ -1995,7 +2536,7 @@ export default function TripDetailPage() {
 
           <div className="form-row">
             <div className="form-group">
-              <label className="form-label">Cost ($)</label>
+              <label className="form-label">Cost (₹ INR)</label>
               <input
                 type="number"
                 min="0"
@@ -2047,7 +2588,7 @@ export default function TripDetailPage() {
 
           <div className="form-row">
             <div className="form-group">
-              <label className="form-label">Amount ($ USD) *</label>
+              <label className="form-label">Amount (₹ INR) *</label>
               <input
                 type="number"
                 step="0.01"
@@ -2117,6 +2658,218 @@ export default function TripDetailPage() {
           </div>
         </form>
       </Modal>
+
+      {/* 7. Post Famous Photo Modal */}
+      <Modal
+        isOpen={photoModalOpen}
+        onClose={() => setPhotoModalOpen(false)}
+        title="Post Famous Photo & Memory"
+        footer={
+          <>
+            <button onClick={() => setPhotoModalOpen(false)} className="btn btn-secondary">Cancel</button>
+            <button
+              onClick={handleAddPhoto}
+              className="btn btn-primary"
+              disabled={photoSubmitting}
+              id="btn-submit-post-photo"
+            >
+              {photoSubmitting ? 'Posting...' : 'Post Famous Photo'}
+            </button>
+          </>
+        }
+      >
+        <form onSubmit={handleAddPhoto}>
+          {/* Preset Picker */}
+          <div style={{ marginBottom: '1.25rem' }}>
+            <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+              <Sparkles size={14} color="var(--primary)" /> Choose from Iconic Indian Presets (Optional)
+            </label>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))', gap: '0.5rem' }}>
+              {FAMOUS_PHOTO_PRESETS.map((preset, idx) => (
+                <div
+                  key={idx}
+                  onClick={() => {
+                    setPhotoForm({
+                      photo_url: preset.photo_url,
+                      title: preset.title,
+                      caption: preset.caption,
+                      location: preset.location,
+                      taken_date: photoForm.taken_date || new Date().toISOString().split('T')[0]
+                    });
+                  }}
+                  style={{
+                    border: photoForm.photo_url === preset.photo_url ? '2px solid var(--primary)' : '1px solid var(--border-color)',
+                    borderRadius: 'var(--radius-md)',
+                    overflow: 'hidden',
+                    cursor: 'pointer',
+                    background: photoForm.photo_url === preset.photo_url ? 'var(--primary-light)' : '#ffffff',
+                    transition: 'var(--transition)'
+                  }}
+                >
+                  <img
+                    src={preset.photo_url}
+                    alt={preset.title}
+                    style={{ width: '100%', height: '55px', objectFit: 'cover' }}
+                  />
+                  <div style={{ padding: '0.35rem 0.5rem', fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-main)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {preset.title.split(' ')[0]} {preset.title.split(' ')[1] || ''}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Photo URL with Live Preview */}
+          <div className="form-group">
+            <label className="form-label">Photo Image URL *</label>
+            <input
+              type="url"
+              className="form-input"
+              placeholder="https://images.unsplash.com/photo-..."
+              value={photoForm.photo_url}
+              onChange={(e) => setPhotoForm({ ...photoForm, photo_url: e.target.value })}
+              required
+              id="input-photo-url"
+            />
+          </div>
+
+          {photoForm.photo_url && (
+            <div style={{ marginBottom: '1rem', borderRadius: 'var(--radius-md)', overflow: 'hidden', maxHeight: '160px', background: '#0f172a' }}>
+              <img
+                src={photoForm.photo_url}
+                alt="Preview"
+                style={{ width: '100%', height: '160px', objectFit: 'cover' }}
+                onError={(e) => { e.currentTarget.style.display = 'none'; }}
+              />
+            </div>
+          )}
+
+          <div className="form-group">
+            <label className="form-label">Photo Title *</label>
+            <input
+              type="text"
+              className="form-input"
+              placeholder="e.g. Sunrise Majesty at Taj Mahal"
+              value={photoForm.title}
+              onChange={(e) => setPhotoForm({ ...photoForm, title: e.target.value })}
+              required
+              id="input-photo-title"
+            />
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label className="form-label">Landmark / Spot Location</label>
+              <input
+                type="text"
+                className="form-input"
+                placeholder="e.g. Agra, Uttar Pradesh"
+                value={photoForm.location}
+                onChange={(e) => setPhotoForm({ ...photoForm, location: e.target.value })}
+                id="input-photo-location"
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Date Taken</label>
+              <input
+                type="date"
+                className="form-input"
+                value={photoForm.taken_date}
+                onChange={(e) => setPhotoForm({ ...photoForm, taken_date: e.target.value })}
+                id="input-photo-date"
+              />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Story / Caption</label>
+            <textarea
+              className="form-textarea"
+              placeholder="Tell the story behind this famous moment..."
+              value={photoForm.caption}
+              onChange={(e) => setPhotoForm({ ...photoForm, caption: e.target.value })}
+              rows={3}
+              id="input-photo-caption"
+            />
+          </div>
+        </form>
+      </Modal>
+
+      {/* 8. Fullscreen Photo Lightbox Modal */}
+      {viewingPhoto && (
+        <Modal
+          isOpen={!!viewingPhoto}
+          onClose={() => setViewingPhoto(null)}
+          title={viewingPhoto.title || 'Trip Photo'}
+          footer={
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+              <button
+                type="button"
+                onClick={() => handleLikePhoto(viewingPhoto.id)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  border: '1px solid var(--border-color)',
+                  background: 'var(--bg-subtle)',
+                  padding: '0.5rem 1rem',
+                  borderRadius: 'var(--radius-full)',
+                  fontWeight: 700,
+                  fontSize: '0.875rem',
+                  cursor: 'pointer',
+                  color: viewingPhoto.likes_count > 0 ? '#ef4444' : 'var(--text-main)'
+                }}
+                id="btn-like-photo-lightbox"
+              >
+                <Heart size={16} fill={viewingPhoto.likes_count > 0 ? '#ef4444' : 'none'} color={viewingPhoto.likes_count > 0 ? '#ef4444' : 'currentColor'} />
+                <span>{viewingPhoto.likes_count || 0} {viewingPhoto.likes_count === 1 ? 'Like' : 'Likes'}</span>
+              </button>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <button
+                  type="button"
+                  onClick={() => handleDeletePhoto(viewingPhoto.id)}
+                  className="btn btn-danger btn-sm"
+                  id="btn-delete-photo-lightbox"
+                >
+                  <Trash2 size={15} /> Delete Photo
+                </button>
+                <button onClick={() => setViewingPhoto(null)} className="btn btn-secondary btn-sm">
+                  Close
+                </button>
+              </div>
+            </div>
+          }
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div style={{ borderRadius: 'var(--radius-md)', overflow: 'hidden', maxHeight: '420px', background: '#0f172a' }}>
+              <img
+                src={viewingPhoto.photo_url}
+                alt={viewingPhoto.title}
+                style={{ width: '100%', height: '100%', maxHeight: '420px', objectFit: 'contain' }}
+              />
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+              {viewingPhoto.location && (
+                <span className="badge badge-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                  <MapPin size={12} /> {viewingPhoto.location}
+                </span>
+              )}
+              {viewingPhoto.taken_date && (
+                <span className="badge badge-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                  <Calendar size={12} /> Captured on {formatDate(viewingPhoto.taken_date)}
+                </span>
+              )}
+            </div>
+
+            {viewingPhoto.caption && (
+              <p style={{ color: 'var(--text-main)', fontSize: '0.95rem', lineHeight: 1.6, background: 'var(--bg-subtle)', padding: '1rem', borderRadius: 'var(--radius-md)' }}>
+                {viewingPhoto.caption}
+              </p>
+            )}
+          </div>
+        </Modal>
+      )}
 
       {/* Delete Trip Confirm Modal */}
       {deleteConfirmModal && (

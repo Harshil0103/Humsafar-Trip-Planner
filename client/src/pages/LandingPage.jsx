@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  Compass, MapPin, Calendar, DollarSign, Sparkles, CheckCircle, ArrowRight,
+  Compass, MapPin, Calendar, IndianRupee, Sparkles, CheckCircle, ArrowRight,
   Globe, Shield, Clock, Heart, Users, Search, Star, Plane, Hotel, ChevronRight,
   Luggage, Navigation, Award, Smile
 } from 'lucide-react';
@@ -369,7 +369,7 @@ export default function LandingPage() {
 
           <div className="card card-interactive" style={{ padding: '2.25rem' }}>
             <div style={{ width: '3.25rem', height: '3.25rem', borderRadius: '14px', background: 'var(--secondary-light)', color: 'var(--secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.35rem' }}>
-              <DollarSign size={26} />
+              <IndianRupee size={26} />
             </div>
             <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.5rem' }}>Dynamic Budget Analytics</h3>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.925rem', lineHeight: 1.65 }}>
@@ -461,7 +461,7 @@ export default function LandingPage() {
             <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
               <div>
                 <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Daily Cost: </span>
-                <strong style={{ color: 'var(--primary)' }}>${selectedDestination.estimated_daily_cost}/day</strong>
+                <strong style={{ color: 'var(--primary)' }}>₹{(selectedDestination.estimated_daily_cost || 2500).toLocaleString('en-IN')}/day</strong>
               </div>
               <button
                 onClick={() => {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Briefcase, Plus, Compass, Calendar, DollarSign, Sparkles, Filter,
+  Briefcase, Plus, Compass, Calendar, IndianRupee, Sparkles, Filter,
   Search, CheckCircle2, Clock, Globe, ArrowRight, Trash2, Copy, MapPin
 } from 'lucide-react';
 import api from '../services/api';
@@ -176,7 +176,7 @@ export default function DashboardPage() {
               Total Budget Planned
             </div>
             <div style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'Outfit' }}>
-              ${totalBudget.toLocaleString()}
+              ₹{totalBudget.toLocaleString('en-IN')}
             </div>
           </div>
         </div>

@@ -93,21 +93,15 @@ export default function LoginPage() {
     }
   }
 
-  async function handleQuickDemo(type) {
+  async function handleQuickLogin() {
     setErrorMessage('');
     setSubmitting(true);
     try {
-      if (type === 'admin') {
-        await login('admin@tripplanner.com', 'AdminPass123!');
-        success('Logged in as Administrator (Alex Vance)');
-        navigate('/admin', { replace: true });
-      } else {
-        await login('traveler@tripplanner.com', 'TravelPass123!');
-        success('Logged in as Demo Traveler (Sarah Jenkins)');
-        navigate(from, { replace: true });
-      }
+      await login('hp835711@gmail.com', 'AdminPass123!');
+      success('Logged in as Harshil Patel (hp835711@gmail.com)');
+      navigate(from, { replace: true });
     } catch (err) {
-      setErrorMessage('Failed to sign in with demo credentials.');
+      setErrorMessage(err.message || 'Failed to sign in.');
     } finally {
       setSubmitting(false);
     }
@@ -335,41 +329,36 @@ export default function LoginPage() {
           </button>
         </form>
 
-        {/* 1-Click Quick Demo Logins */}
+        {/* 1-Click Fast Sign In for Primary User */}
         <div style={{ margin: '1.75rem 0 1.25rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
             <div style={{ flex: 1, height: '1px', background: 'var(--border-color)' }} />
             <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.05em' }}>
-              Instant Demo Logins
+              Quick Access Account
             </span>
             <div style={{ flex: 1, height: '1px', background: 'var(--border-color)' }} />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
-            <button
-              type="button"
-              onClick={() => handleQuickDemo('traveler')}
-              className="btn btn-secondary btn-sm"
-              style={{ gap: '0.35rem', justifyContent: 'center' }}
-              disabled={submitting || googleSubmitting}
-              id="btn-demo-traveler-login"
-            >
-              <Sparkles size={15} color="var(--primary)" />
-              <span>Traveler Demo</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => handleQuickDemo('admin')}
-              className="btn btn-secondary btn-sm"
-              style={{ gap: '0.35rem', justifyContent: 'center' }}
-              disabled={submitting || googleSubmitting}
-              id="btn-demo-admin-login"
-            >
-              <Shield size={15} color="var(--accent)" />
-              <span>Admin Demo</span>
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={handleQuickLogin}
+            className="btn btn-secondary btn-sm"
+            style={{
+              width: '100%',
+              gap: '0.5rem',
+              justifyContent: 'center',
+              padding: '0.65rem 1rem',
+              border: '1.5px solid var(--primary)',
+              background: 'var(--primary-light)',
+              color: 'var(--primary)',
+              fontWeight: 700
+            }}
+            disabled={submitting || googleSubmitting}
+            id="btn-primary-user-login"
+          >
+            <Shield size={16} />
+            <span>1-Click Sign In: hp835711@gmail.com (Harshil Patel)</span>
+          </button>
         </div>
 
         {/* Footer switch to Register */}
