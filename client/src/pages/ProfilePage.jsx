@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { User, Mail, Lock, FileText, Image as ImageIcon, Save, Shield, CheckCircle2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { User, Mail, Lock, FileText, Image as ImageIcon, Save, Shield, CheckCircle2, Database, ArrowRight } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 
@@ -60,7 +61,7 @@ export default function ProfilePage() {
       <div className="card" style={{ padding: '2.5rem 2rem', boxShadow: 'var(--shadow-xl)' }}>
         
         {/* Header */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '2rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1.5rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '1.5rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1.5rem' }}>
           <img
             src={avatarUrl}
             alt={user?.name}
@@ -73,6 +74,33 @@ export default function ProfilePage() {
             </div>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>{user?.email}</p>
           </div>
+        </div>
+
+        {/* Firestore Explorer Banner */}
+        <div style={{
+          marginBottom: '2rem',
+          padding: '1rem 1.25rem',
+          background: 'linear-gradient(135deg, #ede9fe 0%, #e0e7ff 100%)',
+          border: '1px solid #c7d2fe',
+          borderRadius: 'var(--radius-lg)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '1rem'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <div style={{ background: '#4f46e5', color: '#fff', padding: '0.55rem', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Database size={22} />
+            </div>
+            <div>
+              <div style={{ fontWeight: 700, fontSize: '0.95rem', color: '#312e81' }}>Cloud Firestore Live Database</div>
+              <div style={{ fontSize: '0.8rem', color: '#4338ca' }}>Connected to humsafar-trip-planner-2026 for {user?.email}</div>
+            </div>
+          </div>
+          <Link to="/firestore" className="btn btn-sm" style={{ background: '#4f46e5', color: '#fff', fontWeight: 600, gap: '0.4rem' }}>
+            Open Firestore Explorer <ArrowRight size={14} />
+          </Link>
         </div>
 
         <form onSubmit={handleSubmit}>

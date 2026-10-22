@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Briefcase, Plus, Compass, Calendar, IndianRupee, Sparkles, Filter,
-  Search, CheckCircle2, Clock, Globe, ArrowRight, Trash2, Copy, MapPin
+  Search, CheckCircle2, Clock, Globe, ArrowRight, Trash2, Copy, MapPin, Database
 } from 'lucide-react';
 import api from '../services/api';
 import TripCard from '../components/TripCard';
@@ -124,6 +124,10 @@ export default function DashboardPage() {
 
           {/* Action CTAs */}
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <Link to="/firestore" className="btn btn-secondary" id="dashboard-firestore-btn" style={{ background: '#ede9fe', color: '#4338ca', border: '1px solid #c7d2fe' }}>
+              <Database size={18} color="#4f46e5" />
+              <span>Firestore Explorer</span>
+            </Link>
             <Link to="/destinations" className="btn btn-secondary" id="dashboard-explore-btn">
               <Globe size={18} color="var(--primary)" />
               <span>Explore Destinations</span>

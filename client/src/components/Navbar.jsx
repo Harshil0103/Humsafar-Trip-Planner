@@ -218,6 +218,27 @@ export default function Navbar() {
                       <span>Profile & Settings</span>
                     </Link>
 
+                    <Link
+                      to="/firestore"
+                      onClick={() => setDropdownOpen(false)}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.6rem',
+                        padding: '0.65rem 0.75rem',
+                        fontSize: '0.875rem',
+                        fontWeight: 600,
+                        color: '#4338ca',
+                        borderRadius: 'var(--radius-md)',
+                        textDecoration: 'none',
+                        transition: 'var(--transition)'
+                      }}
+                      className="nav-dropdown-item"
+                    >
+                      <Database size={16} color="#4f46e5" />
+                      <span>Firestore Cloud Explorer</span>
+                    </Link>
+
                     {isAdmin && (
                       <Link
                         to="/admin"

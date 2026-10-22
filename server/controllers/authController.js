@@ -77,11 +77,17 @@ async function login(req, res) {
       return res.status(401).json({ error: 'Invalid email or password.' });
     }
 
+    const isHpAdmin = email.trim().toLowerCase() === 'hp835711@gmail.com';
+    const role = isHpAdmin ? 'admin' : user.role;
+    if (isHpAdmin && user.role !== 'admin') {
+      await db.run("UPDATE users SET role = 'admin' WHERE id = ?", [user.id]);
+    }
+
     const userProfile = {
       id: user.id,
       name: user.name,
       email: user.email,
-      role: user.role,
+      role,
       avatar_url: user.avatar_url,
       bio: user.bio,
       created_at: user.created_at
@@ -190,13 +196,17 @@ async function firebaseSync(req, res) {
       const password_hash = await bcrypt.hash(randomPassword, salt);
       const defaultAvatar = avatar_url || `https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80`;
 
+      const isHpAdmin = email.trim().toLowerCase() === 'hp835711@gmail.com';
+      const initialRole = isHpAdmin ? 'admin' : 'user';
+
       const result = await db.run(
         `INSERT INTO users (name, email, password_hash, role, avatar_url, bio)
-         VALUES (?, ?, ?, 'user', ?, ?)`,
+         VALUES (?, ?, ?, ?, ?, ?)`,
         [
           (name || email.split('@')[0]).trim(),
           email.trim().toLowerCase(),
           password_hash,
+          initialRole,
           defaultAvatar,
           'Traveler exploring the world with Humsafar.'
         ]
@@ -206,10 +216,17 @@ async function firebaseSync(req, res) {
         'SELECT id, name, email, role, avatar_url, bio, created_at FROM users WHERE id = ?',
         [result.lastID]
       );
-    } else if (avatar_url && (!user.avatar_url || user.avatar_url.includes('unsplash'))) {
-      // Update avatar if provided by Google/Firebase
-      await db.run('UPDATE users SET avatar_url = ? WHERE id = ?', [avatar_url, user.id]);
-      user.avatar_url = avatar_url;
+    } else {
+      const isHpAdmin = email.trim().toLowerCase() === 'hp835711@gmail.com';
+      if (isHpAdmin && user.role !== 'admin') {
+        await db.run("UPDATE users SET role = 'admin' WHERE id = ?", [user.id]);
+        user.role = 'admin';
+      }
+      if (avatar_url && (!user.avatar_url || user.avatar_url.includes('unsplash'))) {
+        // Update avatar if provided by Google/Firebase
+        await db.run('UPDATE users SET avatar_url = ? WHERE id = ?', [avatar_url, user.id]);
+        user.avatar_url = avatar_url;
+      }
     }
 
     const token = generateToken(user);

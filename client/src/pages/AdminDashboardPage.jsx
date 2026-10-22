@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Shield, Users, Globe, Briefcase, IndianRupee, Plus, Trash2, Edit3,
-  CheckCircle2, AlertCircle, Sparkles, Star, MapPin, X
+  CheckCircle2, AlertCircle, Sparkles, Star, MapPin, X, Database
 } from 'lucide-react';
 import api from '../services/api';
 import Modal from '../components/Modal';
@@ -142,7 +143,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Tab Controls */}
-        <div style={{ display: 'flex', gap: '0.5rem' }}>
+        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
           <button
             onClick={() => setActiveTab('overview')}
             className={`btn ${activeTab === 'overview' ? 'btn-primary' : 'btn-secondary'}`}
@@ -164,6 +165,20 @@ export default function AdminDashboardPage() {
           >
             Users ({users.length})
           </button>
+          <Link
+            to="/firestore"
+            className="btn btn-secondary"
+            style={{
+              gap: '0.45rem',
+              background: '#ede9fe',
+              color: '#4338ca',
+              border: '1px solid #c7d2fe'
+            }}
+            id="admin-firestore-btn"
+          >
+            <Database size={16} color="#4f46e5" />
+            <span>Firestore Data</span>
+          </Link>
         </div>
       </div>
 

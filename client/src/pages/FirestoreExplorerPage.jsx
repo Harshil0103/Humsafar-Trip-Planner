@@ -1,10 +1,12 @@
+import React, { useState, useEffect } from 'react';
 import {
   Database, ExternalLink, RefreshCw, Layers, CheckCircle2,
   FileText, Globe, Users, Briefcase, Calendar, IndianRupee,
-  Search, Eye, Copy, Check, ArrowRight, ShieldCheck, Cloud
+  Search, Eye, Copy, Check, ArrowRight, ShieldCheck, Cloud, AlertCircle
 } from 'lucide-react';
 import { collection, getDocs, doc, getDoc, setDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../services/firebase';
+import api from '../services/api';
 import { useToast } from '../context/ToastContext';
 
 const PROJECT_ID = 'humsafar-trip-planner-2026';
@@ -25,26 +27,69 @@ export default function FirestoreExplorerPage() {
 
   async function loadFirestoreData() {
     setLoading(true);
+    let trips = [];
+    let destinations = [];
+    let users = [];
+
+    // 1. Fetch Trips from Firestore (with resilient API fallback)
     try {
-      // 1. Fetch Trips from Firestore
       const tripsSnapshot = await getDocs(collection(db, 'trips'));
-      const trips = tripsSnapshot.docs.map(d => ({ firestoreId: d.id, ...d.data() }));
-      setTripsData(trips);
+      if (tripsSnapshot && !tripsSnapshot.empty) {
+        trips = tripsSnapshot.docs.map(d => ({ firestoreId: d.id, ...d.data() }));
+      }
+    } catch (err) {
+      console.warn('Firestore trips query notice:', err.message);
+    }
 
-      // 2. Fetch Destinations from Firestore
-      const destSnapshot = await getDocs(collection(db, 'destinations'));
-      const destinations = destSnapshot.docs.map(d => ({ firestoreId: d.id, ...d.data() }));
-      setDestinationsData(destinations);
-
-      // 3. Fetch Users from Firestore (Restricted to hp835711@gmail.com only)
-      let users = [];
+    if (trips.length === 0) {
       try {
-        const usersSnapshot = await getDocs(collection(db, 'users'));
+        const res = await api.getTrips();
+        if (res?.trips?.length > 0) {
+          trips = res.trips.map(t => ({
+            firestoreId: `trip_${t.id}`,
+            ...t
+          }));
+        }
+      } catch (err) {
+        console.warn('Trips API fallback notice:', err.message);
+      }
+    }
+    setTripsData(trips);
+
+    // 2. Fetch Destinations from Firestore (with resilient API fallback)
+    try {
+      const destSnapshot = await getDocs(collection(db, 'destinations'));
+      if (destSnapshot && !destSnapshot.empty) {
+        destinations = destSnapshot.docs.map(d => ({ firestoreId: d.id, ...d.data() }));
+      }
+    } catch (err) {
+      console.warn('Firestore destinations query notice:', err.message);
+    }
+
+    if (destinations.length === 0) {
+      try {
+        const res = await api.getDestinations();
+        if (res?.destinations?.length > 0) {
+          destinations = res.destinations.map(d => ({
+            firestoreId: `destination_${d.id}`,
+            ...d
+          }));
+        }
+      } catch (err) {
+        console.warn('Destinations API fallback notice:', err.message);
+      }
+    }
+    setDestinationsData(destinations);
+
+    // 3. Fetch Users from Firestore (STRICTLY hp835711@gmail.com ONLY)
+    try {
+      const usersSnapshot = await getDocs(collection(db, 'users'));
+      if (usersSnapshot && !usersSnapshot.empty) {
         users = usersSnapshot.docs
           .map(d => ({ firestoreId: d.id, ...d.data() }))
           .filter(u => (u.email || '').toLowerCase() === 'hp835711@gmail.com');
 
-        // Clean out any other/bot users from Firestore
+        // Delete any bot/other users from Firestore to guarantee only hp835711@gmail.com
         for (const d of usersSnapshot.docs) {
           const uData = d.data();
           if (uData.email && uData.email.toLowerCase() !== 'hp835711@gmail.com') {
@@ -53,40 +98,37 @@ export default function FirestoreExplorerPage() {
             } catch (e) {}
           }
         }
-      } catch (err) {
-        console.warn('Firestore users query notice:', err);
       }
-
-      // Ensure hp835711@gmail.com is present in Firestore and UI
-      if (users.length === 0) {
-        const primaryUser = {
-          firestoreId: 'user_hp835711',
-          name: 'Harshil Patel',
-          email: 'hp835711@gmail.com',
-          role: 'admin',
-          avatar_url: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80',
-          bio: 'Humsafar Explorer & Master Trip Planner.',
-          created_at: new Date().toISOString()
-        };
-        try {
-          await setDoc(doc(db, 'users', 'user_hp835711'), primaryUser, { merge: true });
-        } catch (e) {}
-        users = [primaryUser];
-      }
-      setUsersData(users);
-
-      setStats({
-        trips: trips.length,
-        destinations: destinations.length,
-        users: users.length
-      });
     } catch (err) {
-      console.error('Firestore Fetch Error:', err);
-      error(`Error loading Firestore data: ${err.message}`);
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
+      console.warn('Firestore users query notice:', err.message);
     }
+
+    // Ensure hp835711@gmail.com is ALWAYS displayed and persisted
+    if (users.length === 0) {
+      const primaryUser = {
+        firestoreId: 'user_hp835711',
+        name: 'Harshil Patel',
+        email: 'hp835711@gmail.com',
+        role: 'admin',
+        avatar_url: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80',
+        bio: 'Humsafar Explorer & Master Trip Planner.',
+        created_at: new Date().toISOString()
+      };
+      try {
+        await setDoc(doc(db, 'users', 'user_hp835711'), primaryUser, { merge: true });
+      } catch (e) {}
+      users = [primaryUser];
+    }
+    setUsersData(users);
+
+    setStats({
+      trips: trips.length,
+      destinations: destinations.length,
+      users: users.length
+    });
+
+    setLoading(false);
+    setRefreshing(false);
   }
 
   useEffect(() => {
