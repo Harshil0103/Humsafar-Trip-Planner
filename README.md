@@ -1,6 +1,6 @@
 # 🌍 Humsafar — Full-Stack Trip Planner & Journey Companion
 
-**Humsafar** (ہمسفر / हमसफ़र — *Your Trusted Journey Companion*) is a modern, full-stack travel planning platform built to help travelers discover iconic world destinations, create day-by-day itineraries with timeline precision, organize accommodations and multi-modal transit bookings, and manage budgets in real time with dynamic analytics.
+**Humsafar** ( हमसफ़र — *Your Trusted Journey Companion*) is a modern, full-stack travel planning platform built to help travelers discover iconic world destinations, create day-by-day itineraries with timeline precision, organize accommodations and multi-modal transit bookings, and manage budgets in real time with dynamic analytics.
 
 ---
 
